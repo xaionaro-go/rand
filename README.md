@@ -1,31 +1,40 @@
-This's an inaccurate (especially not thread-safe) fast PRNG (which is *not* appropriate for cryptographic tasks). It's inaccurate intentionally to make it even faster.goos: linux
+This's an inaccurate (especially not thread-safe) fast PRNG (which is *not* appropriate for cryptographic tasks). It's inaccurate intentionally to make it even faster.
 
-This PRNG is represented here as `BenchmarkOur*`.
+This PRNG is represented here as `BenchmarkOur*`. `*Safe` functions are
+supposed to be used in a massively-concurrent case where it's required to avoid
+result sequence repeats (for example if you generate
+[NONCE](https://en.wikipedia.org/wiki/Cryptographic_nonce) very-very often and
+very concurrently).
 
 ```
 goos: linux
 goarch: amd64
 pkg: github.com/xaionaro-go/fastrand
-BenchmarkOurRead1-8               	126166237	         8.46 ns/op	 118.18 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead15-8              	129063278	         9.14 ns/op	1641.90 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead16-8              	129793394	         9.00 ns/op	1778.00 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead16Safe-8          	80423994	        15.2 ns/op	1054.87 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead1024-8            	 6198231	       216 ns/op	4751.56 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead65536-8           	   84787	     14426 ns/op	4542.90 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead16777216-8        	     306	   3653427 ns/op	4592.19 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead1-8          	41288500	        27.2 ns/op	  36.79 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead15-8         	27717960	        48.3 ns/op	 310.77 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead16-8         	25788889	        45.3 ns/op	 352.92 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead1024-8       	  707176	      1578 ns/op	 648.89 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead65536-8      	   12357	     96517 ns/op	 679.01 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead16777216-8   	      40	  28693837 ns/op	 584.70 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurUint32nMax-8          	405218553	         2.68 ns/op	1491.55 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurUint32n-8             	410692437	         3.10 ns/op	1289.68 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurUint64n-8             	447721760	         2.54 ns/op	3153.34 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurUint64nSafe-8         	205574767	         5.54 ns/op	1445.20 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardIntn-8           	53668357	        21.4 ns/op	       0 B/op	       0 allocs/op
-BenchmarkValyalaUint32n-8         	50937702	        23.0 ns/op	 174.23 MB/s	       0 B/op	       0 allocs/op
-BenchmarkNebulousLabsIntn-8       	 5895186	       195 ns/op	       0 B/op	       0 allocs/op
+BenchmarkOurRead1-8               	345725725	         9.48 ns/op	 105.53 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead15-8              	356927011	         9.75 ns/op	1538.27 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead16-8              	358622312	        10.2 ns/op	1562.52 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead1024-8            	15735012	       242 ns/op	4235.85 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead65536-8           	  246480	     15999 ns/op	4096.21 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead16777216-8        	     822	   3963771 ns/op	4232.64 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe1-8           	186120896	        20.4 ns/op	  49.10 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe15-8          	184437913	        23.0 ns/op	 651.92 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe16-8          	203232429	        18.5 ns/op	 864.38 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe1024-8        	15831406	       254 ns/op	4031.47 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe65536-8       	  230686	     14295 ns/op	4584.51 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe16777216-8    	     931	   3947902 ns/op	4249.65 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead1-8          	129588265	        26.5 ns/op	  37.67 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead15-8         	53796502	        63.3 ns/op	 236.95 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead16-8         	61517721	        63.5 ns/op	 251.90 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead1024-8       	 1955476	      1724 ns/op	 594.07 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead65536-8      	   34784	    118683 ns/op	 552.19 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead16777216-8   	     129	  27449696 ns/op	 611.20 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurUint32n-8             	1000000000	         2.89 ns/op	1382.27 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurUint64n-8             	1000000000	         3.11 ns/op	2574.18 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurUint32nSafe-8         	563245276	         6.16 ns/op	 649.40 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurUint64nSafe-8         	611604748	         6.41 ns/op	1248.33 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardIntn-8           	133002574	        27.8 ns/op	 287.49 MB/s	       0 B/op	       0 allocs/op
+BenchmarkValyalaUint32n-8         	100000000	        31.4 ns/op	 127.47 MB/s	       0 B/op	       0 allocs/op
+BenchmarkNebulousLabsIntn-8       	16765630	       279 ns/op	  28.68 MB/s	       0 B/op	       0 allocs/op
 PASS
-ok  	github.com/xaionaro-go/fastrand	32.904s
+ok  	github.com/xaionaro-go/fastrand	117.146s
 ```

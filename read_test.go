@@ -54,10 +54,6 @@ func BenchmarkOurRead16(b *testing.B) {
 	benchmarkRead(b, fastrand.Read, 16)
 }
 
-func BenchmarkOurRead16Safe(b *testing.B) {
-	benchmarkRead(b, fastrand.ReadSafe, 16)
-}
-
 func BenchmarkOurRead1024(b *testing.B) {
 	benchmarkRead(b, fastrand.Read, 1024)
 }
@@ -68,6 +64,31 @@ func BenchmarkOurRead65536(b *testing.B) {
 
 func BenchmarkOurRead16777216(b *testing.B) {
 	benchmarkRead(b, fastrand.Read, 16777216)
+}
+
+
+func BenchmarkOurReadSafe1(b *testing.B) {
+	benchmarkRead(b, fastrand.ReadSafe, 1)
+}
+
+func BenchmarkOurReadSafe15(b *testing.B) {
+	benchmarkRead(b, fastrand.ReadSafe, 15)
+}
+
+func BenchmarkOurReadSafe16(b *testing.B) {
+	benchmarkRead(b, fastrand.ReadSafe, 16)
+}
+
+func BenchmarkOurReadSafe1024(b *testing.B) {
+	benchmarkRead(b, fastrand.ReadSafe, 1024)
+}
+
+func BenchmarkOurReadSafe65536(b *testing.B) {
+	benchmarkRead(b, fastrand.ReadSafe, 65536)
+}
+
+func BenchmarkOurReadSafe16777216(b *testing.B) {
+	benchmarkRead(b, fastrand.ReadSafe, 16777216)
 }
 
 func BenchmarkStandardRead1(b *testing.B) {
