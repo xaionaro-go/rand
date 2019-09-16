@@ -15,7 +15,7 @@ func Read(b []byte) (n int, err error) {
 // Read is a fast analog of `math.Read`.
 //go:norace
 func ReadSafe(b []byte) (n int, err error) {
-	return read(b, 15396334245663786197 * Uint64nSafe(math.MaxUint64))
+	return read(b, uint64nPosition ^ (15396334245663786197 * Uint64nSafe(math.MaxUint64)))
 }
 
 //go:norace
