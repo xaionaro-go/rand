@@ -10,11 +10,11 @@ import (
 	"github.com/xaionaro-go/fastrand"
 )
 
-func TestRead(t *testing.T) {
+func testRead(t *testing.T, readFunc func([]byte) (int, error)) {
 	count := 1 << 20
 
 	b := make([]byte, count)
-	_, _ = fastrand.Read(b)
+	_, _ = readFunc(b)
 
 	m := map[uint8]uint64{}
 	var sum uint64
@@ -34,6 +34,14 @@ func TestRead(t *testing.T) {
 	}
 }
 
+func TestRead(t *testing.T) {
+	testRead(t, fastrand.Read)
+}
+
+func TestReadSafe(t *testing.T) {
+	testRead(t, fastrand.ReadSafe)
+}
+
 func BenchmarkOurRead1(b *testing.B) {
 	benchmarkRead(b, fastrand.Read, 1)
 }
@@ -44,6 +52,10 @@ func BenchmarkOurRead15(b *testing.B) {
 
 func BenchmarkOurRead16(b *testing.B) {
 	benchmarkRead(b, fastrand.Read, 16)
+}
+
+func BenchmarkOurRead16Safe(b *testing.B) {
+	benchmarkRead(b, fastrand.ReadSafe, 16)
 }
 
 func BenchmarkOurRead1024(b *testing.B) {

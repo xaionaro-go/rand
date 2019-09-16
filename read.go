@@ -1,6 +1,7 @@
 package fastrand
 
 import (
+	"math"
 	"unsafe"
 )
 
@@ -9,6 +10,12 @@ import (
 //go:norace
 func Read(b []byte) (n int, err error) {
 	return read(b, uint64nPosition^uint64(uint32nPosition))
+}
+
+// Read is a fast analog of `math.Read`.
+//go:norace
+func ReadSafe(b []byte) (n int, err error) {
+	return read(b, 15396334245663786197 * Uint64nSafe(math.MaxUint64))
 }
 
 //go:norace
