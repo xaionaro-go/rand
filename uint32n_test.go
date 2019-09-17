@@ -7,6 +7,7 @@ import (
 
 	valyala "github.com/valyala/fastrand"
 	nebulousLabs "gitlab.com/NebulousLabs/fastrand"
+	lukechampine "lukechampine.com/frand"
 
 	"github.com/xaionaro-go/fastrand"
 )
@@ -57,5 +58,12 @@ func BenchmarkNebulousLabsIntn(b *testing.B) {
 	b.SetBytes(int64(unsafe.Sizeof(int(0))))
 	for i := 0; i < b.N; i++ {
 		nebulousLabs.Intn(1000)
+	}
+}
+
+func BenchmarkLukechampineUint64n(b *testing.B) {
+	b.SetBytes(8)
+	for i := 0; i < b.N; i++ {
+		lukechampine.Uint64n(1000)
 	}
 }

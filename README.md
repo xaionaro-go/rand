@@ -10,34 +10,47 @@ repeats in a massively-concurrent case (for example if you generate
 very concurrently).
 
 ```
-goos: linux
 goarch: amd64
 pkg: github.com/xaionaro-go/fastrand
-BenchmarkOurRead1-8               	345725725	         9.48 ns/op	 105.53 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead15-8              	356927011	         9.75 ns/op	1538.27 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead16-8              	358622312	        10.2 ns/op	1562.52 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead1024-8            	15735012	       242 ns/op	4235.85 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead65536-8           	  246480	     15999 ns/op	4096.21 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurRead16777216-8        	     822	   3963771 ns/op	4232.64 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurReadSafe1-8           	186120896	        20.4 ns/op	  49.10 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurReadSafe15-8          	184437913	        23.0 ns/op	 651.92 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurReadSafe16-8          	203232429	        18.5 ns/op	 864.38 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurReadSafe1024-8        	15831406	       254 ns/op	4031.47 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurReadSafe65536-8       	  230686	     14295 ns/op	4584.51 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurReadSafe16777216-8    	     931	   3947902 ns/op	4249.65 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead1-8          	129588265	        26.5 ns/op	  37.67 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead15-8         	53796502	        63.3 ns/op	 236.95 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead16-8         	61517721	        63.5 ns/op	 251.90 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead1024-8       	 1955476	      1724 ns/op	 594.07 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead65536-8      	   34784	    118683 ns/op	 552.19 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardRead16777216-8   	     129	  27449696 ns/op	 611.20 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurUint32n-8             	1000000000	         2.89 ns/op	1382.27 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurUint64n-8             	1000000000	         3.11 ns/op	2574.18 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurUint32nSafe-8         	563245276	         6.16 ns/op	 649.40 MB/s	       0 B/op	       0 allocs/op
-BenchmarkOurUint64nSafe-8         	611604748	         6.41 ns/op	1248.33 MB/s	       0 B/op	       0 allocs/op
-BenchmarkStandardIntn-8           	133002574	        27.8 ns/op	 287.49 MB/s	       0 B/op	       0 allocs/op
-BenchmarkValyalaUint32n-8         	100000000	        31.4 ns/op	 127.47 MB/s	       0 B/op	       0 allocs/op
-BenchmarkNebulousLabsIntn-8       	16765630	       279 ns/op	  28.68 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead65536Concurrent-8   	  115795	     14780 ns/op	4434.09 MB/s	       4 B/op	       0 allocs/op
+BenchmarkOurRead1-8                 	100000000	        10.6 ns/op	  94.65 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead15-8                	100000000	        15.5 ns/op	 967.01 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead16-8                	100000000	        11.9 ns/op	1344.96 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead1024-8              	 4493490	       223 ns/op	4592.65 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead65536-8             	   69462	     16492 ns/op	3973.83 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurRead16777216-8          	     228	   4460071 ns/op	3761.65 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe1-8             	60834021	        16.9 ns/op	  59.07 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe15-8            	61023537	        19.7 ns/op	 762.17 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe16-8            	56041033	        20.2 ns/op	 790.14 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe1024-8          	 4341667	       286 ns/op	3577.52 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe65536-8         	   67015	     17000 ns/op	3855.15 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurReadSafe16777216-8      	     225	   5194070 ns/op	3230.07 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead1-8            	35815052	        31.7 ns/op	  31.52 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead15-8           	21532710	        65.5 ns/op	 228.90 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead16-8           	19137955	        73.8 ns/op	 216.79 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead1024-8         	  563085	      1851 ns/op	 553.31 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead65536-8        	    8043	    165679 ns/op	 395.56 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardRead16777216-8     	      45	  26171578 ns/op	 641.05 MB/s	       0 B/op	       0 allocs/op
+BenchmarkLukechampine1-8            	32648130	        36.9 ns/op	  27.10 MB/s	       0 B/op	       0 allocs/op
+BenchmarkLukechampine15-8           	23006984	        59.8 ns/op	 250.95 MB/s	       0 B/op	       0 allocs/op
+BenchmarkLukechampine16-8           	22161181	        45.5 ns/op	 351.27 MB/s	       0 B/op	       0 allocs/op
+BenchmarkLukechampine1024-8         	 2605623	       485 ns/op	2110.40 MB/s	       0 B/op	       0 allocs/op
+BenchmarkLukechampine65536-8        	   65628	     18583 ns/op	3526.73 MB/s	       0 B/op	       0 allocs/op
+BenchmarkLukechampine16777216-8     	     234	   5262785 ns/op	3187.90 MB/s	       9 B/op	       0 allocs/op
+BenchmarkOurUint32n-8               	417679042	         3.12 ns/op	1283.88 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurUint64n-8               	362613686	         2.84 ns/op	2812.21 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurUint32nSafe-8           	210415731	         6.04 ns/op	 661.75 MB/s	       0 B/op	       0 allocs/op
+BenchmarkOurUint64nSafe-8           	207220892	         6.03 ns/op	1326.21 MB/s	       0 B/op	       0 allocs/op
+BenchmarkStandardIntn-8             	39605470	        26.0 ns/op	 307.62 MB/s	       0 B/op	       0 allocs/op
+BenchmarkValyalaUint32n-8           	41430604	        24.8 ns/op	 161.45 MB/s	       0 B/op	       0 allocs/op
+BenchmarkNebulousLabsIntn-8         	 5387990	       265 ns/op	  30.22 MB/s	       0 B/op	       0 allocs/op
+BenchmarkLukechampineUint64n-8      	17338686	        60.1 ns/op	 133.15 MB/s	       0 B/op	       0 allocs/op
 PASS
-ok  	github.com/xaionaro-go/fastrand	117.146s
+ok  	github.com/xaionaro-go/fastrand	47.305s
 ```
+
+Links to similar projects:
+
+* [`*Valyala*`](github.com/valyala/fastrand)
+* [`*NebulousLabs*`](gitlab.com/NebulousLabs/fastrand)
+* [`*Lukechampine*`](lukechampine.com/frand)goos: linux

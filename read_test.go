@@ -3,9 +3,11 @@ package fastrand_test
 import (
 	"fmt"
 	"math/rand"
+	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	lukechampine "lukechampine.com/frand"
 
 	"github.com/xaionaro-go/fastrand"
 )
@@ -40,6 +42,10 @@ func TestRead(t *testing.T) {
 
 func TestReadSafe(t *testing.T) {
 	testRead(t, fastrand.ReadSafe)
+}
+
+func BenchmarkOurRead65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, fastrand.Read, 65536)
 }
 
 func BenchmarkOurRead1(b *testing.B) {
@@ -114,6 +120,25 @@ func BenchmarkStandardRead16777216(b *testing.B) {
 	benchmarkRead(b, rand.Read, 16777216)
 }
 
+func BenchmarkLukechampine1(b *testing.B) {
+	benchmarkRead(b, lukechampine.Read, 1)
+}
+func BenchmarkLukechampine15(b *testing.B) {
+	benchmarkRead(b, lukechampine.Read, 15)
+}
+func BenchmarkLukechampine16(b *testing.B) {
+	benchmarkRead(b, lukechampine.Read, 16)
+}
+func BenchmarkLukechampine1024(b *testing.B) {
+	benchmarkRead(b, lukechampine.Read, 1024)
+}
+func BenchmarkLukechampine65536(b *testing.B) {
+	benchmarkRead(b, lukechampine.Read, 65536)
+}
+func BenchmarkLukechampine16777216(b *testing.B) {
+	benchmarkRead(b, lukechampine.Read, 16777216)
+}
+
 func benchmarkRead(b *testing.B, readFunc func([]byte) (int, error), bufSize uint) {
 	buf := make([]byte, bufSize)
 	b.SetBytes(int64(bufSize))
@@ -121,4 +146,17 @@ func benchmarkRead(b *testing.B, readFunc func([]byte) (int, error), bufSize uin
 	for i := 0; i < b.N; i++ {
 		_, _ = readFunc(buf)
 	}
+}
+
+func benchmarkConcurrentRead(b *testing.B, readFunc func([]byte) (int, error), bufSize uint) {
+	bufPool := sync.Pool{New: func() interface{} { return &[][]byte{make([]byte, bufSize)}[0] }}
+	b.SetBytes(int64(bufSize))
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		buf := bufPool.Get().(*[]byte)
+		for pb.Next() {
+			_, _ = readFunc(*buf)
+		}
+		bufPool.Put(buf)
+	})
 }
