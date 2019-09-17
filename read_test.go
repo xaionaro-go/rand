@@ -44,10 +44,6 @@ func TestReadSafe(t *testing.T) {
 	testRead(t, fastrand.ReadSafe)
 }
 
-func BenchmarkOurRead65536Concurrent(b *testing.B) {
-	benchmarkConcurrentRead(b, fastrand.Read, 65536)
-}
-
 func BenchmarkOurRead1(b *testing.B) {
 	benchmarkRead(b, fastrand.Read, 1)
 }
@@ -137,6 +133,13 @@ func BenchmarkLukechampine65536(b *testing.B) {
 }
 func BenchmarkLukechampine16777216(b *testing.B) {
 	benchmarkRead(b, lukechampine.Read, 16777216)
+}
+
+func BenchmarkOurRead65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, fastrand.Read, 65536)
+}
+func BenchmarkLukechampineRead65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, lukechampine.Read, 65536)
 }
 
 func benchmarkRead(b *testing.B, readFunc func([]byte) (int, error), bufSize uint) {
