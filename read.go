@@ -2,6 +2,7 @@ package fastrand
 
 import (
 	"math"
+	"math/bits"
 	"unsafe"
 )
 
@@ -27,7 +28,8 @@ func read(b []byte, pos uint64) (n int, err error) {
 	{
 		lPos := pos
 		for i = 8; i < l; i += 8 {
-			lPos = 15396334245663786197 * (lPos + 8963315421273233617)
+			lPos += 8963315421273233617
+			lPos = bits.RotateLeft64(lPos, 32)
 			*(*uint64)((unsafe.Pointer)(&b[i-8])) = lPos
 			if i&0x3ff == 0 {
 				uint64nPosition ^= lPos

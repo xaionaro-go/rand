@@ -5,6 +5,7 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/stretchr/testify/assert"
 	valyala "github.com/valyala/fastrand"
 	nebulousLabs "gitlab.com/NebulousLabs/fastrand"
 	lukechampine "lukechampine.com/frand"
@@ -66,4 +67,23 @@ func BenchmarkLukechampineUint64n(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		lukechampine.Uint64n(1000)
 	}
+}
+
+func TestUint32n(t *testing.T) {
+	var count int
+	for i := 0; i < 1000; i++ {
+		if fastrand.Uint32n(4) == 0 {
+			count++
+		}
+	}
+	assert.True(t, count > 220, count)
+	assert.True(t, count < 280, count)
+
+	for i := 0; i < 9000; i++ {
+		if fastrand.Uint32n(4) == 0 {
+			count++
+		}
+	}
+	assert.True(t, count > 2300, count)
+	assert.True(t, count < 2700, count)
 }

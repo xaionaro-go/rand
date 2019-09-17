@@ -13,26 +13,28 @@ import (
 )
 
 func testRead(t *testing.T, readFunc func([]byte) (int, error)) {
-	count := 1 << 20
+	for i := 4; i <= 20; i++ {
+		count := 1 << i
 
-	b := make([]byte, count)
-	_, _ = readFunc(b)
+		b := make([]byte, count)
+		_, _ = readFunc(b)
 
-	m := map[uint8]uint64{}
-	var sum uint64
-	for _, v := range b {
-		sum += uint64(v)
-		m[v]++
-	}
+		m := map[uint8]uint64{}
+		var sum uint64
+		for _, v := range b {
+			sum += uint64(v)
+			m[v]++
+		}
 
-	avg := float64(sum) / float64(len(b))
-	assert.True(t, avg > 120)
-	assert.True(t, avg < 136)
+		avg := float64(sum) / float64(len(b))
+		assert.True(t, avg > 128-(20*(1<<8)/float64(count))-float64(count), fmt.Sprintf("%v: %v", i, avg))
+		assert.True(t, avg < 136+(20*(1<<8)/float64(count))+float64(count), fmt.Sprintf("%v: %v", i, avg))
 
-	for v := 0; v < (1 << 8); v++ {
-		c := m[uint8(v)]
-		assert.True(t, float64(c)*1.05 > float64(count/(1<<8)), fmt.Sprintf("m[%v]==%v", v, c))
-		assert.True(t, float64(c)*0.95 < float64(count/(1<<8)), fmt.Sprintf("m[%v]==%v", v, c))
+		for v := 0; v < (1 << 8); v++ {
+			c := m[uint8(v)]
+			assert.True(t, float64(c)*(1+1/float64(i))+20 > float64(count/(1<<8))-(20*(1<<8)/float64(count)), fmt.Sprintf("%v: m[%v]==%v", i, v, c))
+			assert.True(t, float64(c)*(1-1/float64(i))-20 < float64(count/(1<<8))+(20*(1<<8)/float64(count)), fmt.Sprintf("%v: m[%v]==%v", i, v, c))
+		}
 	}
 }
 

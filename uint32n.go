@@ -2,6 +2,7 @@ package fastrand
 
 import (
 	"math"
+	"math/bits"
 )
 
 var uint32nPosition uint32
@@ -12,8 +13,8 @@ var uint32nPosition uint32
 // value to concurrent routines.
 //go:norace
 func Uint32n(n uint32) uint32 {
-	// Just two arbitrary prime numbers:
 	uint32nPosition = 3948558707 * (uint32nPosition + 1948560947)
+	uint32nPosition = bits.RotateLeft32(uint32nPosition, 16)
 	if n == math.MaxUint32 {
 		return uint32nPosition
 	}
