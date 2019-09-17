@@ -13,7 +13,7 @@ import (
 )
 
 func testRead(t *testing.T, readFunc func([]byte) (int, error)) {
-	for i := 4; i <= 20; i++ {
+	for i := 8; i <= 20; i++ {
 		count := 1 << i
 
 		b := make([]byte, count)
@@ -27,13 +27,13 @@ func testRead(t *testing.T, readFunc func([]byte) (int, error)) {
 		}
 
 		avg := float64(sum) / float64(len(b))
-		assert.True(t, avg > 128-(20*(1<<8)/float64(count))-float64(count), fmt.Sprintf("%v: %v", i, avg))
-		assert.True(t, avg < 136+(20*(1<<8)/float64(count))+float64(count), fmt.Sprintf("%v: %v", i, avg))
+		assert.True(t, avg > 124, fmt.Sprintf("%v: %v", i, avg))
+		assert.True(t, avg < 132, fmt.Sprintf("%v: %v", i, avg))
 
 		for v := 0; v < (1 << 8); v++ {
 			c := m[uint8(v)]
-			assert.True(t, float64(c)*(1+1/float64(i))+20 > float64(count/(1<<8))-(20*(1<<8)/float64(count)), fmt.Sprintf("%v: m[%v]==%v", i, v, c))
-			assert.True(t, float64(c)*(1-1/float64(i))-20 < float64(count/(1<<8))+(20*(1<<8)/float64(count)), fmt.Sprintf("%v: m[%v]==%v", i, v, c))
+			assert.True(t, float64(c)*1.15+20 > float64(count)/(1<<8), fmt.Sprintf("%v: m[%v]==%v far from %v", i, v, c, count/256))
+			assert.True(t, float64(c)*0.85-20 < float64(count)/(1<<8), fmt.Sprintf("%v: m[%v]==%v far from %v", i, v, c, count/256))
 		}
 	}
 }
