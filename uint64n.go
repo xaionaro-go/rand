@@ -18,5 +18,5 @@ func Uint64n(n uint64) uint64 {
 	if n == math.MaxUint64 {
 		return uint64nPosition
 	}
-	return uint64nPosition % n
+	return ReduceUint64(uint64nPosition, n)
 }

@@ -15,5 +15,5 @@ func Uint64nSafe(n uint64) uint64 {
 	if n == math.MaxUint64 {
 		return pos
 	}
-	return pos % n
+	return ReduceUint64(pos, n)
 }

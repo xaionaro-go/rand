@@ -15,5 +15,5 @@ func Uint32nSafe(n uint32) uint32 {
 	if n == math.MaxUint32 {
 		return pos
 	}
-	return pos % n
+	return ReduceUint32(pos, n)
 }
