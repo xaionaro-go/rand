@@ -29,11 +29,11 @@ func read(b []byte, pos uint64) (n int, err error) {
 		for i = 8; i < l; i += 8 {
 			lPos = 15396334245663786197 * (lPos + 8963315421273233617)
 			*(*uint64)((unsafe.Pointer)(&b[i-8])) = lPos
-			if i&0x3f == 0 {
+			if i&0x3ff == 0 {
 				uint64nPosition ^= lPos
 			}
 		}
-		pos = 15396334245663786197 * (lPos + 8963315421273233617)
+		pos ^= 15396334245663786197 * (lPos + 8963315421273233617)
 	}
 	i -= 8
 	uint64nPosition ^= pos * 15396334245663786197
