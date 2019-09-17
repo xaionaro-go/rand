@@ -27,10 +27,10 @@ func testRead(t *testing.T, readFunc func([]byte) (int, error)) {
 	assert.True(t, avg > 120)
 	assert.True(t, avg < 136)
 
-	for v:=0; v<(1<<8); v++ {
-		c:=m[uint8(v)]
-		assert.True(t, float64(c)*1.05 > float64(count / (1 << 8)), fmt.Sprintf("m[%v]==%v", v, c))
-		assert.True(t, float64(c)*0.95 < float64(count / (1 << 8)), fmt.Sprintf("m[%v]==%v", v, c))
+	for v := 0; v < (1 << 8); v++ {
+		c := m[uint8(v)]
+		assert.True(t, float64(c)*1.05 > float64(count/(1<<8)), fmt.Sprintf("m[%v]==%v", v, c))
+		assert.True(t, float64(c)*0.95 < float64(count/(1<<8)), fmt.Sprintf("m[%v]==%v", v, c))
 	}
 }
 
@@ -65,7 +65,6 @@ func BenchmarkOurRead65536(b *testing.B) {
 func BenchmarkOurRead16777216(b *testing.B) {
 	benchmarkRead(b, fastrand.Read, 16777216)
 }
-
 
 func BenchmarkOurReadSafe1(b *testing.B) {
 	benchmarkRead(b, fastrand.ReadSafe, 1)
@@ -119,7 +118,7 @@ func benchmarkRead(b *testing.B, readFunc func([]byte) (int, error), bufSize uin
 	buf := make([]byte, bufSize)
 	b.SetBytes(int64(bufSize))
 	b.ResetTimer()
-	for i:=0; i<b.N; i++ {
+	for i := 0; i < b.N; i++ {
 		_, _ = readFunc(buf)
 	}
 }

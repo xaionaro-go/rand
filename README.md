@@ -1,9 +1,12 @@
-This's an inaccurate (especially not thread-safe) fast PRNG (which is *not* appropriate for cryptographic tasks). It's inaccurate intentionally to make it even faster.
+[![GoDoc](https://godoc.org/github.com/xaionaro-go/fastrand?status.svg)](https://godoc.org/github.com/xaionaro-go/fastrand)
 
-This PRNG is represented here as `BenchmarkOur*`. `*Safe` functions are
-supposed to be used in a massively-concurrent case where it's required to avoid
-result sequence repeats (for example if you generate
-[NONCE](https://en.wikipedia.org/wiki/Cryptographic_nonce) very-very often and
+This's an inaccurate fast PRNG (which is *not* appropriate for cryptographic tasks).
+
+This PRNG is represented here as `BenchmarkOur*`.
+
+`*Safe` functions are supposed to be used if it's required to avoid extra
+repeats in a massively-concurrent case (for example if you generate
+[nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce) very-very often and
 very concurrently).
 
 ```

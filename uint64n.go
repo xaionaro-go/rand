@@ -7,7 +7,9 @@ import (
 var uint64nPosition uint64
 
 // Uint64n is a fast analog of rand.Intn, but it returns `uint64`.
-// It's not thread-safe in formal terms, but it's not important :)
+//
+// It's not thread-safe in formal terms so it sometimes may return the same
+// value to concurrent routines.
 //go:norace
 func Uint64n(n uint64) uint64 {
 	// Just two arbitrary prime numbers:

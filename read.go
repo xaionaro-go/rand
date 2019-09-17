@@ -5,17 +5,19 @@ import (
 	"unsafe"
 )
 
-// Read is a fast analog of `math.Read`.
-// It's not thread-safe in formal terms, but it's not important :)
+// Read is a fast analog of `math/rand.Read`.
+//
+// It's not thread-safe in formal terms so it sometimes may return the same
+// value to concurrent routines.
 //go:norace
 func Read(b []byte) (n int, err error) {
 	return read(b, uint64nPosition^uint64(uint32nPosition))
 }
 
-// Read is a fast analog of `math.Read`.
+// Read is a fast analog of `math/rand.Read`.
 //go:norace
 func ReadSafe(b []byte) (n int, err error) {
-	return read(b, uint64nPosition ^ (15396334245663786197 * Uint64nSafe(math.MaxUint64)))
+	return read(b, uint64nPosition^(15396334245663786197*Uint64nSafe(math.MaxUint64)))
 }
 
 //go:norace
