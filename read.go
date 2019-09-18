@@ -12,7 +12,8 @@ import (
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
 // If you need a non-copy guarantee among concurrent calls of this function
-// (for example for `nonce`) then you can use `*Safe` functions. However if
+// (for example for `nonce`) then you can use `*Safe` functions. Or you can use
+// different instances of `fastrand.PRNG` for different goroutines. Also if
 // you use a random number for example for sampling or from a single goroutine
 // then you can safely use this function.
 func (prng *PRNG) Read(b []byte) (n int, err error) {
@@ -25,7 +26,8 @@ func (prng *PRNG) Read(b []byte) (n int, err error) {
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
 // If you need a non-copy guarantee among concurrent calls of this function
-// (for example for `nonce`) then you can use `*Safe` functions. However if
+// (for example for `nonce`) then you can use `*Safe` functions. Or you can use
+// different instances of `fastrand.PRNG` for different goroutines. Also if
 // you use a random number for example for sampling or from a single goroutine
 // then you can safely use this function.
 func Read(b []byte) (n int, err error) {
@@ -59,7 +61,8 @@ func ReadSafe(b []byte) (n int, err error) {
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
 // If you need a non-copy guarantee among concurrent calls of this function
-// (for example for `nonce`) then you can use `*Safe` functions. However if
+// (for example for `nonce`) then you can use `*Safe` functions. Or you can use
+// different instances of `fastrand.PRNG` for different goroutines. Also if
 // you use a random number for example for sampling or from a single goroutine
 // then you can safely use this function.
 func (prng *PRNG) ReadFast(b []byte) (n int, err error) {
@@ -81,7 +84,8 @@ func (prng *PRNG) ReadFast(b []byte) (n int, err error) {
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
 // If you need a non-copy guarantee among concurrent calls of this function
-// (for example for `nonce`) then you can use `*Safe` functions. However if
+// (for example for `nonce`) then you can use `*Safe` functions. Or you can use
+// different instances of `fastrand.PRNG` for different goroutines. Also if
 // you use a random number for example for sampling or from a single goroutine
 // then you can safely use this function.
 func ReadFast(b []byte) (n int, err error) {
@@ -130,7 +134,8 @@ func ReadFastSafe(b []byte) (n int, err error) {
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
 // If you need a non-copy guarantee among concurrent calls of this function
-// (for example for `nonce`) then you can use `*Safe` functions. However if
+// (for example for `nonce`) then you can use `*Safe` functions. Or you can use
+// different instances of `fastrand.PRNG` for different goroutines. Also if
 // you use a random number for example for sampling or from a single goroutine
 // then you can safely use this function.
 func (prng *PRNG) XORRead(b []byte) (n int, err error) {
@@ -149,7 +154,8 @@ func (prng *PRNG) XORRead(b []byte) (n int, err error) {
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
 // If you need a non-copy guarantee among concurrent calls of this function
-// (for example for `nonce`) then you can use `*Safe` functions. However if
+// (for example for `nonce`) then you can use `*Safe` functions. Or you can use
+// different instances of `fastrand.PRNG` for different goroutines. Also if
 // you use a random number for example for sampling or from a single goroutine
 // then you can safely use this function.
 func XORRead(b []byte) (n int, err error) {

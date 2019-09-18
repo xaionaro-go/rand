@@ -102,7 +102,8 @@ func Uint64nSafe(n uint64) uint64 {
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
 // If you need a non-copy guarantee among concurrent calls of this function
-// (for example for `nonce`) then you can use `*Safe` functions. However if
+// (for example for `nonce`) then you can use `*Safe` functions. Or you can use
+// different instances of `fastrand.PRNG` for different goroutines. Also if
 // you use a random number for example for sampling or from a single goroutine
 // then you can safely use this function.
 func (prng *PRNG) Uint64Fast() uint64 {
@@ -126,7 +127,8 @@ func (prng *PRNG) Uint64Fast() uint64 {
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
 // If you need a non-copy guarantee among concurrent calls of this function
-// (for example for `nonce`) then you can use `*Safe` functions. However if
+// (for example for `nonce`) then you can use `*Safe` functions. Or you can use
+// different instances of `fastrand.PRNG` for different goroutines. Also if
 // you use a random number for example for sampling or from a single goroutine
 // then you can safely use this function.
 func Uint64Fast() uint64 {
