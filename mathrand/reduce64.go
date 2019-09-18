@@ -1,4 +1,4 @@
-package fastrand
+package mathrand
 
 // ReduceUint64 returns `src` as a value smaller than `mod`.
 func ReduceUint64(src, mod uint64) uint64 {

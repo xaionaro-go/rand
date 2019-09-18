@@ -1,4 +1,4 @@
-package fastrand
+package mathrand
 
 func min(a, b int) int {
 	if a < b {

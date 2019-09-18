@@ -1,8 +1,9 @@
-package fastrand_test
+package mathrand_test
 
 import (
 	"math/rand"
 	"testing"
+	"time"
 	"unsafe"
 
 	"github.com/stretchr/testify/assert"
@@ -10,50 +11,8 @@ import (
 	nebulousLabs "gitlab.com/NebulousLabs/fastrand"
 	lukechampine "lukechampine.com/frand"
 
-	"github.com/xaionaro-go/fastrand"
+	"github.com/xaionaro-go/rand/mathrand"
 )
-
-func BenchmarkOurUint32n(b *testing.B) {
-	b.SetBytes(4)
-	for i := 0; i < b.N; i++ {
-		fastrand.Uint32n(1000)
-	}
-}
-
-func BenchmarkOurUint32nSafe(b *testing.B) {
-	b.SetBytes(4)
-	for i := 0; i < b.N; i++ {
-		fastrand.Uint32nSafe(1000)
-	}
-}
-
-func BenchmarkOurUint32nFast(b *testing.B) {
-	b.SetBytes(4)
-	for i := 0; i < b.N; i++ {
-		fastrand.Uint32nFast(1000)
-	}
-}
-
-func BenchmarkOurUint64n(b *testing.B) {
-	b.SetBytes(8)
-	for i := 0; i < b.N; i++ {
-		fastrand.Uint64n(1000)
-	}
-}
-
-func BenchmarkOurUint64nSafe(b *testing.B) {
-	b.SetBytes(8)
-	for i := 0; i < b.N; i++ {
-		fastrand.Uint64nSafe(1000)
-	}
-}
-
-func BenchmarkOurUint64nFast(b *testing.B) {
-	b.SetBytes(8)
-	for i := 0; i < b.N; i++ {
-		fastrand.Uint64nFast(1000)
-	}
-}
 
 func BenchmarkStandardIntn(b *testing.B) {
 	b.SetBytes(int64(unsafe.Sizeof(int(0))))
@@ -92,10 +51,17 @@ func BenchmarkLukechampineUint64n(b *testing.B) {
 	}
 }
 
-func testUint32n(t *testing.T, fn func(uint32) uint32) {
+func BenchmarkTimeNowUnixNano(b *testing.B) {
+	b.SetBytes(8)
+	for i := 0; i < b.N; i++ {
+		time.Now().UnixNano()
+	}
+}
+
+func testUint32(t *testing.T, fn func() uint32) {
 	var count int
 	for i := 0; i < 1000; i++ {
-		if fn(4) == 0 {
+		if mathrand.ReduceUint32(fn(), 4) == 0 {
 			count++
 		}
 	}
@@ -103,7 +69,7 @@ func testUint32n(t *testing.T, fn func(uint32) uint32) {
 	assert.True(t, count < 280, count)
 
 	for i := 0; i < 9000; i++ {
-		if fn(4) == 0 {
+		if mathrand.ReduceUint32(fn(), 4) == 0 {
 			count++
 		}
 	}
@@ -111,20 +77,10 @@ func testUint32n(t *testing.T, fn func(uint32) uint32) {
 	assert.True(t, count < 2700, count)
 }
 
-func TestUint32n(t *testing.T) {
-	testUint32n(t, fastrand.Uint32n)
-}
-func TestUint32nSafe(t *testing.T) {
-	testUint32n(t, fastrand.Uint32nSafe)
-}
-func TestUint32nFast(t *testing.T) {
-	testUint32n(t, fastrand.Uint32nFast)
-}
-
-func testUint64n(t *testing.T, fn func(uint64) uint64) {
+func testUint64(t *testing.T, fn func() uint64) {
 	var count int
 	for i := 0; i < 1000; i++ {
-		if fn(4) == 0 {
+		if mathrand.ReduceUint64(fn(), 4) == 0 {
 			count++
 		}
 	}
@@ -132,20 +88,10 @@ func testUint64n(t *testing.T, fn func(uint64) uint64) {
 	assert.True(t, count < 280, count)
 
 	for i := 0; i < 9000; i++ {
-		if fn(4) == 0 {
+		if mathrand.ReduceUint64(fn(), 4) == 0 {
 			count++
 		}
 	}
 	assert.True(t, count > 2300, count)
 	assert.True(t, count < 2700, count)
-}
-
-func TestUint64n(t *testing.T) {
-	testUint64n(t, fastrand.Uint64n)
-}
-func TestUint64nSafe(t *testing.T) {
-	testUint64n(t, fastrand.Uint64nSafe)
-}
-func TestUint64nFast(t *testing.T) {
-	testUint64n(t, fastrand.Uint64nFast)
 }
