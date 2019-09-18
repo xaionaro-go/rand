@@ -7,7 +7,8 @@ This PRNG is represented here as `BenchmarkOur*`.
 `*Safe` functions are supposed to be used if it's required to avoid extra
 repeats in a massively-concurrent case (for example if you generate
 [nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce) very-very often and
-very concurrently).
+very concurrently). Also you may avoid repeats by using seperate instances of
+`PRNG` on each concurrent goroutine.
 
 ```
 goos: linux
