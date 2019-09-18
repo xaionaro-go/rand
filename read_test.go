@@ -27,8 +27,8 @@ func testRead(t *testing.T, readFunc func([]byte) (int, error)) {
 		}
 
 		avg := float64(sum) / float64(len(b))
-		assert.True(t, avg > 124, fmt.Sprintf("%v: %v", i, avg))
-		assert.True(t, avg < 132, fmt.Sprintf("%v: %v", i, avg))
+		assert.True(t, avg > 122, fmt.Sprintf("%v: %v", i, avg))
+		assert.True(t, avg < 134, fmt.Sprintf("%v: %v", i, avg))
 
 		for v := 0; v < (1 << 8); v++ {
 			c := m[uint8(v)]
