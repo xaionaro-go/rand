@@ -34,8 +34,8 @@ func ReadSafe(b []byte) (n int, err error) {
 // generate two blocks of such random numbers and XOR them then the resulting
 // (XOR-ed) block will reveal an anomaly (the distribution of values will be
 // essentially less even than expected on good random numbers). However if
-// not going to convert this random values then this random numbers should be
-// good enough.
+// you are not going to convert this random values then this random numbers
+// should be good enough.
 //
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
@@ -65,13 +65,11 @@ func ReadFastSafe(b []byte) (n int, err error) {
 // XORRead XORs argument `b` with a pseudo-random value. The result is
 // the same (but faster) as:
 //
-// ```
-// x := make([]byte, len(b))
-// fastrand.Read(x)
-// for i := range b {
-// 	b[i] ^= x[i]
-// }
-// ```
+// 	x := make([]byte, len(b))
+// 	fastrand.Read(x)
+// 	for i := range b {
+// 		b[i] ^= x[i]
+// 	}
 //
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
@@ -83,16 +81,14 @@ func XORRead(b []byte) (n int, err error) {
 	return xorRead(b, uint64nPosition^uint64(uint32nPosition))
 }
 
-// XORRead XORs argument `b` with a pseudo-random value. The result is
+// XORReadSafe XORs argument `b` with a pseudo-random value. The result is
 // the same (but faster) as:
 //
-// ```
-// x := make([]byte, len(b))
-// fastrand.Read(x)
-// for i := range b {
-// 	b[i] ^= x[i]
-// }
-// ```
+// 	x := make([]byte, len(b))
+// 	fastrand.ReadSafe(x)
+// 	for i := range b {
+// 		b[i] ^= x[i]
+// 	}
 func XORReadSafe(b []byte) (n int, err error) {
 	return xorRead(b, uint64nPosition^(primeNumber64bit0*Uint64nSafe(math.MaxUint64)))
 }

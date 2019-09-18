@@ -33,7 +33,8 @@ func Uint64() uint64 {
 
 // Uint64n is a fast analog of `math/rand.Intn`, but it returns `uint64`.
 //
-// This function is equivalent to `fastrand.ReduceUint64(fastrand.Uint64(), n)`
+// This function is equivalent to:
+// 	fastrand.ReduceUint64(fastrand.Uint64(), n)
 func Uint64n(n uint64) uint64 {
 	return ReduceUint64(Uint64(), n)
 }
@@ -48,7 +49,8 @@ func Uint64Safe() uint64 {
 
 // Uint64nSafe is a fast analog of `math/rand.Intn`, but it returns `uint64`.
 //
-// This function is equivalent to `fastrand.ReduceUint64(fastrand.Uint64Safe(), n)`
+// This function is equivalent to:
+// 	fastrand.ReduceUint64(fastrand.Uint64Safe(), n)
 func Uint64nSafe(n uint64) uint64 {
 	return ReduceUint64(Uint64Safe(), n)
 }
@@ -62,8 +64,8 @@ func Uint64nSafe(n uint64) uint64 {
 // generate two blocks of such random numbers and XOR them then the resulting
 // (XOR-ed) block will reveal an anomaly (the distribution of values will be
 // essentially less even than expected on good random numbers). However if
-// not going to convert this random values then this random numbers should be
-// good enough.
+// you are not going to convert this random values then this random numbers
+// should be good enough.
 //
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
@@ -79,7 +81,8 @@ func Uint64Fast() uint64 {
 
 // Uint64nSafe is a fast analog of `math/rand.Intn`, but it returns `uint64`.
 //
-// This function is equivalent to `fastrand.ReduceUint64(fastrand.Uint64Fast(), n)`
+// This function is equivalent to:
+// 	fastrand.ReduceUint64(fastrand.Uint64Fast(), n)
 func Uint64nFast(n uint64) uint64 {
 	return ReduceUint64(Uint64Fast(), n)
 }

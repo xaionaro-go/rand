@@ -33,7 +33,8 @@ func Uint32() uint32 {
 
 // Uint32n is a fast analog of `math/rand.Intn`, but it returns `uint32`.
 //
-// This function is equivalent to `fastrand.ReduceUint32(fastrand.Uint32(), n)`
+// This function is equivalent to:
+// 	fastrand.ReduceUint32(fastrand.Uint32(), n)
 func Uint32n(n uint32) uint32 {
 	return ReduceUint32(Uint32(), n)
 }
@@ -48,7 +49,8 @@ func Uint32Safe() uint32 {
 
 // Uint32nSafe is a fast analog of `math/rand.Intn`, but it returns `uint32`.
 //
-// This function is equivalent to `fastrand.ReduceUint32(fastrand.Uint32Safe(), n)`
+// This function is equivalent to:
+// 	fastrand.ReduceUint32(fastrand.Uint32Safe(), n)
 func Uint32nSafe(n uint32) uint32 {
 	return ReduceUint32(Uint32Safe(), n)
 }
@@ -62,8 +64,8 @@ func Uint32nSafe(n uint32) uint32 {
 // generate two blocks of such random numbers and XOR them then the resulting
 // (XOR-ed) block will reveal an anomaly (the distribution of values will be
 // essentially less even than expected on good random numbers). However if
-// not going to convert this random values then this random numbers should be
-// good enough.
+// you are not going to convert this random values then this random numbers
+// should be good enough.
 //
 // It's not thread-safe in formal terms (which is usually not important
 // for PRNG) and it sometimes may return the same value to concurrent routines.
@@ -79,7 +81,8 @@ func Uint32Fast() uint32 {
 
 // Uint32nSafe is a fast analog of `math/rand.Intn`, but it returns `uint32`.
 //
-// This function is equivalent to `fastrand.ReduceUint32(fastrand.Uint32Fast(), n)`
+// This function is equivalent to:
+// 	fastrand.ReduceUint32(fastrand.Uint32Fast(), n)
 func Uint32nFast(n uint32) uint32 {
 	return ReduceUint32(Uint32Fast(), n)
 }
