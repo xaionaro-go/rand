@@ -5,14 +5,15 @@ import (
 	"os"
 )
 
-func methodToValues(method *Method) map[string]interface{}{
+func methodToValues(method *Method) map[string]interface{} {
 	return map[string]interface{}{
-		`MethodName`: method.Name,
-		`InitCode`: method.InitCode,
-		`GetValueCode`: method.GetValueCode,
+		`MethodName`:     method.Name,
+		`InitCode`:       method.InitCode,
+		`GetValueCode`:   method.GetValueCode,
 		`ResultVariable`: method.ResultVariable,
-		`FinishCode`: method.FinishCode,
-		`ResultSize`: method.ResultSize,
+		`FinishCode`:     method.FinishCode,
+		`ResultSize`:     method.ResultSize,
+		`AdditionalInfo`: method.AdditionalInfo,
 	}
 }
 

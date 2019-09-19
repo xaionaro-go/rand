@@ -11,8 +11,7 @@ func rotateLeft64(x uint64, k int) uint64 {
 	return x<<k | x>>(64-k)
 }
 
-// Uint64AddRotateMultiply is a fast analog of `math/rand.Uint64`. This mathrandom
-// numbers could easily be predicted (it's not an analog of `crypto/mathrand.Read`).
+// Uint64AddRotateMultiply is a fast analog of `math/rand.Uint64`.
 //
 // The reliability on statistical tests of this method is unknown. This is
 // improved LCG method, so see also Uint64MultiplyAdd.
@@ -24,8 +23,7 @@ func (prng *PRNG) Uint64AddRotateMultiply() uint64 {
 	return prng.state64[0]
 }
 
-// Uint64AddNRotateMultiply is a fast analog of `math/rand.Uint64`. This mathrandom
-// numbers could easily be predicted (it's not an analog of `crypto/mathrand.Read`).
+// Uint64AddNRotateMultiply is a fast analog of `math/rand.Uint64`.
 //
 // The reliability on statistical tests of this method is unknown. This is
 // improved LCG method, so see also Uint64MultiplyAdd.
@@ -38,8 +36,7 @@ func (prng *PRNG) Uint64AddNRotateMultiply() uint64 {
 	return prng.state64[0]
 }
 
-// Uint64MultiplyAdd is a fast (but week) analog of `math/rand.Uint64`. This
-// mathrandom numbers could easily be predicted (it's not an analog of `crypto/mathrand.Read`).
+// Uint64MultiplyAdd is a fast (but week) analog of `math/rand.Uint64`.
 //
 // See also: https://en.wikipedia.org/wiki/Linear_congruential_generator
 func (prng *PRNG) Uint64MultiplyAdd() uint64 {
@@ -49,8 +46,6 @@ func (prng *PRNG) Uint64MultiplyAdd() uint64 {
 }
 
 // Uint64AddRotate is a very fast (but weak) analog of `math/rand.Uint64`.
-// This mathrandom numbers could easily be predicted (it's not an analog of
-// `crypto/mathrand.Read`).
 //
 // The reliability on statistical tests of this method is unknown. However
 // it's known that this method generates uneven distribution if you will XOR
@@ -62,8 +57,6 @@ func (prng *PRNG) Uint64AddRotate() uint64 {
 }
 
 // Uint64Xorshift is a very fast (but weak) analog of `math/rand.Uint64`.
-// This mathrandom numbers could easily be predicted (it's not an analog of
-// `crypto/mathrand.Read`).
 //
 // See also: https://en.wikipedia.org/wiki/Xorshift
 func (prng *PRNG) Uint64Xorshift() uint64 {

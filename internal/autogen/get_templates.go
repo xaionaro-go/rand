@@ -7,7 +7,11 @@ import (
 
 var (
 	templateRead = `
-//go:norace
+// Read{{ .MethodName }} is an analog of math/rand.Read. This random numbers could easily
+// be predicted (it's not an analog of crypto/rand.Read).
+//
+// Applied PRNG method:
+// {{ .AdditionalInfo }}
 func (prng *PRNG) Read{{ .MethodName }}(b []byte) (l int, err error) {
 	l = len(b)
 	var i int
@@ -56,7 +60,14 @@ func (prng *PRNG) Read{{ .MethodName }}(b []byte) (l int, err error) {
 	return
 }
 
-//go:norace
+// XORRead XORs argument "b" with a pseudo-random value. The result is
+// the same (but faster) as:
+//
+// 	x := make([]byte, len(b))
+// 	mathrand.Read{{ .MethodName }}(x)
+// 	for i := range b {
+// 		b[i] ^= x[i]
+// 	}
 func (prng *PRNG) XORRead{{ .MethodName }}(b []byte) (l int, err error) {
 	l = len(b)
 	var i int
@@ -146,8 +157,8 @@ func Benchmark{{ .MethodName }}(b *testing.B) {
 
 type Templates struct {
 	TestMethod *template.Template
-	Read *template.Template
-	TestRead *template.Template
+	Read       *template.Template
+	TestRead   *template.Template
 }
 
 func GetTemplates() (result *Templates, err error) {

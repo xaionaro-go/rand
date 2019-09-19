@@ -10,18 +10,19 @@ import (
 )
 
 type Method struct {
-	Name         string
-	InitCode     string
-	GetValueCode string
+	Name           string
+	InitCode       string
+	GetValueCode   string
 	ResultVariable string
-	FinishCode   string
-	ResultSize   uint
+	FinishCode     string
+	ResultSize     uint
+	AdditionalInfo string
 
-	genInfo *genInfo
-	initCodeLines []string
+	genInfo           *genInfo
+	initCodeLines     []string
 	getValueCodeLines []string
-	finishCodeLines []string
-	variableExists map[string]struct{}
+	finishCodeLines   []string
+	variableExists    map[string]struct{}
 }
 type Methods []*Method
 
@@ -40,7 +41,7 @@ func ParseMethods() (methods Methods, err error) {
 
 func parseMethodsFromFile(path string) (methods Methods, err error) {
 	fileSet := token.NewFileSet()
-	parsedFile, err := parser.ParseFile(fileSet, path, nil, 0)
+	parsedFile, err := parser.ParseFile(fileSet, path, nil, parser.ParseComments)
 	if err != nil {
 		return
 	}
@@ -65,13 +66,13 @@ func parseMethodsFromFile(path string) (methods Methods, err error) {
 
 type genInfo struct {
 	constMap map[string]ast.Expr
-	funcMap map[string]*ast.FuncDecl
+	funcMap  map[string]*ast.FuncDecl
 }
 
 func parseGenInfo(genDecl *ast.GenDecl) (result *genInfo) {
 	result = &genInfo{
 		constMap: map[string]ast.Expr{},
-		funcMap: map[string]*ast.FuncDecl{},
+		funcMap:  map[string]*ast.FuncDecl{},
 	}
 	for _, spec := range genDecl.Specs {
 		switch spec := spec.(type) {
@@ -110,8 +111,8 @@ func parseMethod(funcDecl *ast.FuncDecl, genInfo *genInfo) (method *Method) {
 	}
 
 	method = &Method{
-		Name: funcDecl.Name.String(),
-		genInfo: genInfo,
+		Name:           funcDecl.Name.String(),
+		genInfo:        genInfo,
 		variableExists: map[string]struct{}{},
 	}
 
@@ -121,6 +122,14 @@ func parseMethod(funcDecl *ast.FuncDecl, genInfo *genInfo) (method *Method) {
 		method.ResultSize = 4
 	case `uint64`:
 		method.ResultSize = 8
+	}
+
+	if funcDecl.Doc != nil {
+		var docs []string
+		for _, doc := range funcDecl.Doc.List {
+			docs = append(docs, strings.Trim(doc.Text, "/ "))
+		}
+		method.AdditionalInfo = strings.Join(docs, "\n// ")
 	}
 
 	if len(funcDecl.Type.Results.List[0].Names) == 1 {
