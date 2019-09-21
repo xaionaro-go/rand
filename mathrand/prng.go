@@ -47,10 +47,16 @@ func NewWithSeed(seed uint64) *PRNG {
 	i := uint64(0)
 	for idx := range prng.state64 {
 		prng.state64[idx] = seed + i
+		if prng.state64[idx] == 0 {
+			panic(`"seed+i" cannot be zero`)
+		}
 		i++
 	}
 	for idx := range prng.state32 {
 		prng.state32[idx] = uint32(seed + i)
+		if prng.state32[idx] == 0 {
+			panic(`"uint32(seed+i)" cannot be zero`)
+		}
 		i++
 	}
 	prng.pcgState = (seed << 1) + 1 // must be odd

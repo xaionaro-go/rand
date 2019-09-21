@@ -46,13 +46,18 @@ func (prng *PRNG) Uint64MultiplyAdd() uint64 {
 }
 
 // Uint64AddRotate is a very fast (but weak) analog of `math/rand.Uint64`.
-//
-// The reliability on statistical tests of this method is unknown. However
-// it's known that this method generates uneven distribution if you will XOR
-// two values generates by this method.
 func (prng *PRNG) Uint64AddRotate() uint64 {
 	prng.state64[0] += primeNumber64bit1
 	prng.state64[0] = rotateLeft64(prng.state64[0], 32)
+	return prng.state64[0]
+}
+
+// Uint64AddIfShiftXOR is a very fast (but weak) analog of `math/rand.Uint32`.
+func (prng *PRNG) Uint64AddIfShiftXOR() uint64 {
+	prng.state64[0] += primeNumber64bit1
+	if prng.state64[0]&0x02 == 0 {
+		prng.state64[0] ^= prng.state64[0] >> 32
+	}
 	return prng.state64[0]
 }
 
@@ -77,14 +82,6 @@ func (prng *PRNG) Uint64Xoshiro256() (result uint64) {
 	prng.state64[2] ^= t
 	prng.state64[3] ^= rotateLeft64(prng.state64[3], 45)
 	return
-}
-
-// See also: https://en.wikipedia.org/wiki/Lagged_Fibonacci_generator
-func (prng *PRNG) Uint64LFG() uint64 {
-	newPosition := prng.state64[0] * prng.state64[1]
-	prng.state64[1] = prng.state64[0]
-	prng.state64[0] = newPosition
-	return newPosition
 }
 
 // See also: https://en.wikipedia.org/wiki/Middle-square_method

@@ -13,6 +13,7 @@ import (
 
 const (
 	allowedAvgError = 1 << 10
+	initialSeed     = 8963315421273233617
 )
 
 func testRead(t *testing.T, readFunc func([]byte) (int, error)) {

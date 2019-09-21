@@ -119,6 +119,8 @@ func (prng *PRNG) XORRead{{ .MethodName }}(b []byte) (l int, err error) {
 	templateTestRead = `
 func TestRead{{ .MethodName }}(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.Read{{ .MethodName }})
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample("{{ .MethodName }}", prng.Read{{ .MethodName }})
 }
 func BenchmarkRead{{ .MethodName }}1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.Read{{ .MethodName }}, 1)

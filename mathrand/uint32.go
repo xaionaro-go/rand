@@ -36,13 +36,18 @@ func (prng *PRNG) Uint32MultiplyAdd() uint32 {
 }
 
 // Uint32AddRotate is a very fast (but weak) analog of `math/rand.Uint32`.
-//
-// The reliability on statistical tests of this method is unknown. However
-// it's known that this method generates uneven distribution if you will XOR
-// two values generates by this method.
 func (prng *PRNG) Uint32AddRotate() uint32 {
-	prng.state32[0] += primeNumber32bit1
+	prng.state32[0] += primeNumber32bit0
 	prng.state32[0] = rotateLeft32(prng.state32[0], 32)
+	return prng.state32[0]
+}
+
+// Uint32AddIfShiftXOR is a very fast (but weak) analog of `math/rand.Uint32`.
+func (prng *PRNG) Uint32AddIfShiftXOR() uint32 {
+	prng.state32[0] += primeNumber32bit1
+	if prng.state32[0]&0x02 == 0 {
+		prng.state32[0] ^= prng.state32[0] >> 16
+	}
 	return prng.state32[0]
 }
 
@@ -54,14 +59,6 @@ func (prng *PRNG) Uint32Xorshift() uint32 {
 	prng.state32[0] ^= prng.state32[0] >> 17
 	prng.state32[0] ^= prng.state32[0] << 5
 	return prng.state32[0]
-}
-
-// See also: https://en.wikipedia.org/wiki/Lagged_Fibonacci_generator
-func (prng *PRNG) Uint32LFG() uint32 {
-	newPosition := prng.state32[0] * prng.state32[1]
-	prng.state32[1] = prng.state32[0]
-	prng.state32[0] = newPosition
-	return newPosition
 }
 
 // See also: https://en.wikipedia.org/wiki/Permuted_congruential_generator
