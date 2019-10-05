@@ -3,6 +3,7 @@ package mathrand_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/xaionaro-go/rand/mathrand"
 )
 
@@ -11,7 +12,11 @@ import (
 func TestReadUint64AddRotateMultiply(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint64AddRotateMultiply)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint64AddRotateMultiply", prng.ReadUint64AddRotateMultiply)
+	prepareSample(
+		"Uint64AddRotateMultiply",
+		prng.ReadUint64AddRotateMultiply,
+		false,
+	)
 }
 func BenchmarkReadUint64AddRotateMultiply1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateMultiply, 1)
@@ -29,10 +34,99 @@ func BenchmarkReadUint64AddRotateMultiply65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateMultiply, 65536)
 }
 
+func TestXORReadUint64AddRotateMultiply(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiply)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64AddRotateMultiply",
+		prng.ReadUint64AddRotateMultiply,
+		false,
+	)
+}
+func BenchmarkXORReadUint64AddRotateMultiply1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiply, 1)
+}
+func BenchmarkXORReadUint64AddRotateMultiply16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiply, 16)
+}
+func BenchmarkXORReadUint64AddRotateMultiply1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiply, 1024)
+}
+func BenchmarkXORReadUint64AddRotateMultiply65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiply, 65536)
+}
+func BenchmarkXORReadUint64AddRotateMultiply65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiply, 65536)
+}
+
+func TestReadUint64AddRotateMultiplyWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint64AddRotateMultiplyWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint64AddRotateMultiplyWithReseed",
+		prng.ReadUint64AddRotateMultiplyWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint64AddRotateMultiply(a)
+	mathrand.GlobalPRNG.ReadUint64AddRotateMultiply(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint64AddRotateMultiplyWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateMultiplyWithReseed, 1)
+}
+func BenchmarkReadUint64AddRotateMultiplyWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateMultiplyWithReseed, 16)
+}
+func BenchmarkReadUint64AddRotateMultiplyWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateMultiplyWithReseed, 1024)
+}
+func BenchmarkReadUint64AddRotateMultiplyWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateMultiplyWithReseed, 65536)
+}
+func BenchmarkReadUint64AddRotateMultiplyWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateMultiplyWithReseed, 65536)
+}
+
+func TestXORReadUint64AddRotateMultiplyWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiplyWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64AddRotateMultiplyWithReseed",
+		prng.ReadUint64AddRotateMultiplyWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint64AddRotateMultiply(a)
+	mathrand.GlobalPRNG.XORReadUint64AddRotateMultiply(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint64AddRotateMultiplyWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiplyWithReseed, 1)
+}
+func BenchmarkXORReadUint64AddRotateMultiplyWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiplyWithReseed, 16)
+}
+func BenchmarkXORReadUint64AddRotateMultiplyWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiplyWithReseed, 1024)
+}
+func BenchmarkXORReadUint64AddRotateMultiplyWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiplyWithReseed, 65536)
+}
+func BenchmarkXORReadUint64AddRotateMultiplyWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateMultiplyWithReseed, 65536)
+}
+
 func TestReadUint64AddNRotateMultiply(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint64AddNRotateMultiply)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint64AddNRotateMultiply", prng.ReadUint64AddNRotateMultiply)
+	prepareSample(
+		"Uint64AddNRotateMultiply",
+		prng.ReadUint64AddNRotateMultiply,
+		false,
+	)
 }
 func BenchmarkReadUint64AddNRotateMultiply1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddNRotateMultiply, 1)
@@ -50,10 +144,99 @@ func BenchmarkReadUint64AddNRotateMultiply65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64AddNRotateMultiply, 65536)
 }
 
+func TestXORReadUint64AddNRotateMultiply(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiply)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64AddNRotateMultiply",
+		prng.ReadUint64AddNRotateMultiply,
+		false,
+	)
+}
+func BenchmarkXORReadUint64AddNRotateMultiply1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiply, 1)
+}
+func BenchmarkXORReadUint64AddNRotateMultiply16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiply, 16)
+}
+func BenchmarkXORReadUint64AddNRotateMultiply1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiply, 1024)
+}
+func BenchmarkXORReadUint64AddNRotateMultiply65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiply, 65536)
+}
+func BenchmarkXORReadUint64AddNRotateMultiply65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiply, 65536)
+}
+
+func TestReadUint64AddNRotateMultiplyWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint64AddNRotateMultiplyWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint64AddNRotateMultiplyWithReseed",
+		prng.ReadUint64AddNRotateMultiplyWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint64AddNRotateMultiply(a)
+	mathrand.GlobalPRNG.ReadUint64AddNRotateMultiply(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint64AddNRotateMultiplyWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddNRotateMultiplyWithReseed, 1)
+}
+func BenchmarkReadUint64AddNRotateMultiplyWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddNRotateMultiplyWithReseed, 16)
+}
+func BenchmarkReadUint64AddNRotateMultiplyWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddNRotateMultiplyWithReseed, 1024)
+}
+func BenchmarkReadUint64AddNRotateMultiplyWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddNRotateMultiplyWithReseed, 65536)
+}
+func BenchmarkReadUint64AddNRotateMultiplyWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64AddNRotateMultiplyWithReseed, 65536)
+}
+
+func TestXORReadUint64AddNRotateMultiplyWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiplyWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64AddNRotateMultiplyWithReseed",
+		prng.ReadUint64AddNRotateMultiplyWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiply(a)
+	mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiply(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint64AddNRotateMultiplyWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiplyWithReseed, 1)
+}
+func BenchmarkXORReadUint64AddNRotateMultiplyWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiplyWithReseed, 16)
+}
+func BenchmarkXORReadUint64AddNRotateMultiplyWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiplyWithReseed, 1024)
+}
+func BenchmarkXORReadUint64AddNRotateMultiplyWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiplyWithReseed, 65536)
+}
+func BenchmarkXORReadUint64AddNRotateMultiplyWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64AddNRotateMultiplyWithReseed, 65536)
+}
+
 func TestReadUint64MultiplyAdd(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint64MultiplyAdd)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint64MultiplyAdd", prng.ReadUint64MultiplyAdd)
+	prepareSample(
+		"Uint64MultiplyAdd",
+		prng.ReadUint64MultiplyAdd,
+		false,
+	)
 }
 func BenchmarkReadUint64MultiplyAdd1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64MultiplyAdd, 1)
@@ -71,10 +254,99 @@ func BenchmarkReadUint64MultiplyAdd65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64MultiplyAdd, 65536)
 }
 
+func TestXORReadUint64MultiplyAdd(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64MultiplyAdd)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64MultiplyAdd",
+		prng.ReadUint64MultiplyAdd,
+		false,
+	)
+}
+func BenchmarkXORReadUint64MultiplyAdd1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MultiplyAdd, 1)
+}
+func BenchmarkXORReadUint64MultiplyAdd16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MultiplyAdd, 16)
+}
+func BenchmarkXORReadUint64MultiplyAdd1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MultiplyAdd, 1024)
+}
+func BenchmarkXORReadUint64MultiplyAdd65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MultiplyAdd, 65536)
+}
+func BenchmarkXORReadUint64MultiplyAdd65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64MultiplyAdd, 65536)
+}
+
+func TestReadUint64MultiplyAddWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint64MultiplyAddWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint64MultiplyAddWithReseed",
+		prng.ReadUint64MultiplyAddWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint64MultiplyAdd(a)
+	mathrand.GlobalPRNG.ReadUint64MultiplyAdd(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint64MultiplyAddWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64MultiplyAddWithReseed, 1)
+}
+func BenchmarkReadUint64MultiplyAddWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64MultiplyAddWithReseed, 16)
+}
+func BenchmarkReadUint64MultiplyAddWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64MultiplyAddWithReseed, 1024)
+}
+func BenchmarkReadUint64MultiplyAddWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64MultiplyAddWithReseed, 65536)
+}
+func BenchmarkReadUint64MultiplyAddWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64MultiplyAddWithReseed, 65536)
+}
+
+func TestXORReadUint64MultiplyAddWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64MultiplyAddWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64MultiplyAddWithReseed",
+		prng.ReadUint64MultiplyAddWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint64MultiplyAdd(a)
+	mathrand.GlobalPRNG.XORReadUint64MultiplyAdd(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint64MultiplyAddWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MultiplyAddWithReseed, 1)
+}
+func BenchmarkXORReadUint64MultiplyAddWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MultiplyAddWithReseed, 16)
+}
+func BenchmarkXORReadUint64MultiplyAddWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MultiplyAddWithReseed, 1024)
+}
+func BenchmarkXORReadUint64MultiplyAddWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MultiplyAddWithReseed, 65536)
+}
+func BenchmarkXORReadUint64MultiplyAddWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64MultiplyAddWithReseed, 65536)
+}
+
 func TestReadUint64AddRotate(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint64AddRotate)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint64AddRotate", prng.ReadUint64AddRotate)
+	prepareSample(
+		"Uint64AddRotate",
+		prng.ReadUint64AddRotate,
+		false,
+	)
 }
 func BenchmarkReadUint64AddRotate1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddRotate, 1)
@@ -92,10 +364,209 @@ func BenchmarkReadUint64AddRotate65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64AddRotate, 65536)
 }
 
+func TestXORReadUint64AddRotate(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64AddRotate)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64AddRotate",
+		prng.ReadUint64AddRotate,
+		false,
+	)
+}
+func BenchmarkXORReadUint64AddRotate1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotate, 1)
+}
+func BenchmarkXORReadUint64AddRotate16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotate, 16)
+}
+func BenchmarkXORReadUint64AddRotate1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotate, 1024)
+}
+func BenchmarkXORReadUint64AddRotate65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotate, 65536)
+}
+func BenchmarkXORReadUint64AddRotate65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotate, 65536)
+}
+
+func TestReadUint64AddRotateWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint64AddRotateWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint64AddRotateWithReseed",
+		prng.ReadUint64AddRotateWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint64AddRotate(a)
+	mathrand.GlobalPRNG.ReadUint64AddRotate(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint64AddRotateWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateWithReseed, 1)
+}
+func BenchmarkReadUint64AddRotateWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateWithReseed, 16)
+}
+func BenchmarkReadUint64AddRotateWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateWithReseed, 1024)
+}
+func BenchmarkReadUint64AddRotateWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateWithReseed, 65536)
+}
+func BenchmarkReadUint64AddRotateWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64AddRotateWithReseed, 65536)
+}
+
+func TestXORReadUint64AddRotateWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64AddRotateWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64AddRotateWithReseed",
+		prng.ReadUint64AddRotateWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint64AddRotate(a)
+	mathrand.GlobalPRNG.XORReadUint64AddRotate(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint64AddRotateWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateWithReseed, 1)
+}
+func BenchmarkXORReadUint64AddRotateWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateWithReseed, 16)
+}
+func BenchmarkXORReadUint64AddRotateWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateWithReseed, 1024)
+}
+func BenchmarkXORReadUint64AddRotateWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateWithReseed, 65536)
+}
+func BenchmarkXORReadUint64AddRotateWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64AddRotateWithReseed, 65536)
+}
+
+func TestReadUint64AddIfShiftXOR(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint64AddIfShiftXOR)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint64AddIfShiftXOR",
+		prng.ReadUint64AddIfShiftXOR,
+		false,
+	)
+}
+func BenchmarkReadUint64AddIfShiftXOR1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddIfShiftXOR, 1)
+}
+func BenchmarkReadUint64AddIfShiftXOR16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddIfShiftXOR, 16)
+}
+func BenchmarkReadUint64AddIfShiftXOR1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddIfShiftXOR, 1024)
+}
+func BenchmarkReadUint64AddIfShiftXOR65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddIfShiftXOR, 65536)
+}
+func BenchmarkReadUint64AddIfShiftXOR65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64AddIfShiftXOR, 65536)
+}
+
+func TestXORReadUint64AddIfShiftXOR(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXOR)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64AddIfShiftXOR",
+		prng.ReadUint64AddIfShiftXOR,
+		false,
+	)
+}
+func BenchmarkXORReadUint64AddIfShiftXOR1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXOR, 1)
+}
+func BenchmarkXORReadUint64AddIfShiftXOR16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXOR, 16)
+}
+func BenchmarkXORReadUint64AddIfShiftXOR1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXOR, 1024)
+}
+func BenchmarkXORReadUint64AddIfShiftXOR65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXOR, 65536)
+}
+func BenchmarkXORReadUint64AddIfShiftXOR65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXOR, 65536)
+}
+
+func TestReadUint64AddIfShiftXORWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint64AddIfShiftXORWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint64AddIfShiftXORWithReseed",
+		prng.ReadUint64AddIfShiftXORWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint64AddIfShiftXOR(a)
+	mathrand.GlobalPRNG.ReadUint64AddIfShiftXOR(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint64AddIfShiftXORWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddIfShiftXORWithReseed, 1)
+}
+func BenchmarkReadUint64AddIfShiftXORWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddIfShiftXORWithReseed, 16)
+}
+func BenchmarkReadUint64AddIfShiftXORWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddIfShiftXORWithReseed, 1024)
+}
+func BenchmarkReadUint64AddIfShiftXORWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64AddIfShiftXORWithReseed, 65536)
+}
+func BenchmarkReadUint64AddIfShiftXORWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64AddIfShiftXORWithReseed, 65536)
+}
+
+func TestXORReadUint64AddIfShiftXORWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXORWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64AddIfShiftXORWithReseed",
+		prng.ReadUint64AddIfShiftXORWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint64AddIfShiftXOR(a)
+	mathrand.GlobalPRNG.XORReadUint64AddIfShiftXOR(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint64AddIfShiftXORWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXORWithReseed, 1)
+}
+func BenchmarkXORReadUint64AddIfShiftXORWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXORWithReseed, 16)
+}
+func BenchmarkXORReadUint64AddIfShiftXORWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXORWithReseed, 1024)
+}
+func BenchmarkXORReadUint64AddIfShiftXORWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXORWithReseed, 65536)
+}
+func BenchmarkXORReadUint64AddIfShiftXORWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64AddIfShiftXORWithReseed, 65536)
+}
+
 func TestReadUint64Xorshift(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint64Xorshift)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint64Xorshift", prng.ReadUint64Xorshift)
+	prepareSample(
+		"Uint64Xorshift",
+		prng.ReadUint64Xorshift,
+		false,
+	)
 }
 func BenchmarkReadUint64Xorshift1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64Xorshift, 1)
@@ -113,10 +584,99 @@ func BenchmarkReadUint64Xorshift65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64Xorshift, 65536)
 }
 
+func TestXORReadUint64Xorshift(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64Xorshift)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64Xorshift",
+		prng.ReadUint64Xorshift,
+		false,
+	)
+}
+func BenchmarkXORReadUint64Xorshift1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xorshift, 1)
+}
+func BenchmarkXORReadUint64Xorshift16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xorshift, 16)
+}
+func BenchmarkXORReadUint64Xorshift1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xorshift, 1024)
+}
+func BenchmarkXORReadUint64Xorshift65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xorshift, 65536)
+}
+func BenchmarkXORReadUint64Xorshift65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64Xorshift, 65536)
+}
+
+func TestReadUint64XorshiftWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint64XorshiftWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint64XorshiftWithReseed",
+		prng.ReadUint64XorshiftWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint64Xorshift(a)
+	mathrand.GlobalPRNG.ReadUint64Xorshift(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint64XorshiftWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64XorshiftWithReseed, 1)
+}
+func BenchmarkReadUint64XorshiftWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64XorshiftWithReseed, 16)
+}
+func BenchmarkReadUint64XorshiftWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64XorshiftWithReseed, 1024)
+}
+func BenchmarkReadUint64XorshiftWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64XorshiftWithReseed, 65536)
+}
+func BenchmarkReadUint64XorshiftWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64XorshiftWithReseed, 65536)
+}
+
+func TestXORReadUint64XorshiftWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64XorshiftWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64XorshiftWithReseed",
+		prng.ReadUint64XorshiftWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint64Xorshift(a)
+	mathrand.GlobalPRNG.XORReadUint64Xorshift(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint64XorshiftWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64XorshiftWithReseed, 1)
+}
+func BenchmarkXORReadUint64XorshiftWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64XorshiftWithReseed, 16)
+}
+func BenchmarkXORReadUint64XorshiftWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64XorshiftWithReseed, 1024)
+}
+func BenchmarkXORReadUint64XorshiftWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64XorshiftWithReseed, 65536)
+}
+func BenchmarkXORReadUint64XorshiftWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64XorshiftWithReseed, 65536)
+}
+
 func TestReadUint64Xoshiro256(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint64Xoshiro256)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint64Xoshiro256", prng.ReadUint64Xoshiro256)
+	prepareSample(
+		"Uint64Xoshiro256",
+		prng.ReadUint64Xoshiro256,
+		false,
+	)
 }
 func BenchmarkReadUint64Xoshiro2561(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64Xoshiro256, 1)
@@ -134,10 +694,99 @@ func BenchmarkReadUint64Xoshiro25665536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64Xoshiro256, 65536)
 }
 
+func TestXORReadUint64Xoshiro256(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64Xoshiro256)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64Xoshiro256",
+		prng.ReadUint64Xoshiro256,
+		false,
+	)
+}
+func BenchmarkXORReadUint64Xoshiro2561(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xoshiro256, 1)
+}
+func BenchmarkXORReadUint64Xoshiro25616(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xoshiro256, 16)
+}
+func BenchmarkXORReadUint64Xoshiro2561024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xoshiro256, 1024)
+}
+func BenchmarkXORReadUint64Xoshiro25665536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xoshiro256, 65536)
+}
+func BenchmarkXORReadUint64Xoshiro25665536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64Xoshiro256, 65536)
+}
+
+func TestReadUint64Xoshiro256WithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint64Xoshiro256WithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint64Xoshiro256WithReseed",
+		prng.ReadUint64Xoshiro256WithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint64Xoshiro256(a)
+	mathrand.GlobalPRNG.ReadUint64Xoshiro256(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint64Xoshiro256WithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64Xoshiro256WithReseed, 1)
+}
+func BenchmarkReadUint64Xoshiro256WithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64Xoshiro256WithReseed, 16)
+}
+func BenchmarkReadUint64Xoshiro256WithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64Xoshiro256WithReseed, 1024)
+}
+func BenchmarkReadUint64Xoshiro256WithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64Xoshiro256WithReseed, 65536)
+}
+func BenchmarkReadUint64Xoshiro256WithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64Xoshiro256WithReseed, 65536)
+}
+
+func TestXORReadUint64Xoshiro256WithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64Xoshiro256WithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64Xoshiro256WithReseed",
+		prng.ReadUint64Xoshiro256WithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint64Xoshiro256(a)
+	mathrand.GlobalPRNG.XORReadUint64Xoshiro256(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint64Xoshiro256WithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xoshiro256WithReseed, 1)
+}
+func BenchmarkXORReadUint64Xoshiro256WithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xoshiro256WithReseed, 16)
+}
+func BenchmarkXORReadUint64Xoshiro256WithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xoshiro256WithReseed, 1024)
+}
+func BenchmarkXORReadUint64Xoshiro256WithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64Xoshiro256WithReseed, 65536)
+}
+func BenchmarkXORReadUint64Xoshiro256WithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64Xoshiro256WithReseed, 65536)
+}
+
 func TestReadUint64MSWS(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint64MSWS)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint64MSWS", prng.ReadUint64MSWS)
+	prepareSample(
+		"Uint64MSWS",
+		prng.ReadUint64MSWS,
+		false,
+	)
 }
 func BenchmarkReadUint64MSWS1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64MSWS, 1)
@@ -155,10 +804,99 @@ func BenchmarkReadUint64MSWS65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64MSWS, 65536)
 }
 
+func TestXORReadUint64MSWS(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64MSWS)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64MSWS",
+		prng.ReadUint64MSWS,
+		false,
+	)
+}
+func BenchmarkXORReadUint64MSWS1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MSWS, 1)
+}
+func BenchmarkXORReadUint64MSWS16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MSWS, 16)
+}
+func BenchmarkXORReadUint64MSWS1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MSWS, 1024)
+}
+func BenchmarkXORReadUint64MSWS65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MSWS, 65536)
+}
+func BenchmarkXORReadUint64MSWS65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64MSWS, 65536)
+}
+
+func TestReadUint64MSWSWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint64MSWSWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint64MSWSWithReseed",
+		prng.ReadUint64MSWSWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint64MSWS(a)
+	mathrand.GlobalPRNG.ReadUint64MSWS(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint64MSWSWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64MSWSWithReseed, 1)
+}
+func BenchmarkReadUint64MSWSWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64MSWSWithReseed, 16)
+}
+func BenchmarkReadUint64MSWSWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64MSWSWithReseed, 1024)
+}
+func BenchmarkReadUint64MSWSWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint64MSWSWithReseed, 65536)
+}
+func BenchmarkReadUint64MSWSWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint64MSWSWithReseed, 65536)
+}
+
+func TestXORReadUint64MSWSWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint64MSWSWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint64MSWSWithReseed",
+		prng.ReadUint64MSWSWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint64MSWS(a)
+	mathrand.GlobalPRNG.XORReadUint64MSWS(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint64MSWSWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MSWSWithReseed, 1)
+}
+func BenchmarkXORReadUint64MSWSWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MSWSWithReseed, 16)
+}
+func BenchmarkXORReadUint64MSWSWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MSWSWithReseed, 1024)
+}
+func BenchmarkXORReadUint64MSWSWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint64MSWSWithReseed, 65536)
+}
+func BenchmarkXORReadUint64MSWSWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint64MSWSWithReseed, 65536)
+}
+
 func TestReadUint32AddRotateMultiply(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint32AddRotateMultiply)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint32AddRotateMultiply", prng.ReadUint32AddRotateMultiply)
+	prepareSample(
+		"Uint32AddRotateMultiply",
+		prng.ReadUint32AddRotateMultiply,
+		false,
+	)
 }
 func BenchmarkReadUint32AddRotateMultiply1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateMultiply, 1)
@@ -176,10 +914,99 @@ func BenchmarkReadUint32AddRotateMultiply65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateMultiply, 65536)
 }
 
+func TestXORReadUint32AddRotateMultiply(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiply)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32AddRotateMultiply",
+		prng.ReadUint32AddRotateMultiply,
+		false,
+	)
+}
+func BenchmarkXORReadUint32AddRotateMultiply1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiply, 1)
+}
+func BenchmarkXORReadUint32AddRotateMultiply16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiply, 16)
+}
+func BenchmarkXORReadUint32AddRotateMultiply1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiply, 1024)
+}
+func BenchmarkXORReadUint32AddRotateMultiply65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiply, 65536)
+}
+func BenchmarkXORReadUint32AddRotateMultiply65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiply, 65536)
+}
+
+func TestReadUint32AddRotateMultiplyWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint32AddRotateMultiplyWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint32AddRotateMultiplyWithReseed",
+		prng.ReadUint32AddRotateMultiplyWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint32AddRotateMultiply(a)
+	mathrand.GlobalPRNG.ReadUint32AddRotateMultiply(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint32AddRotateMultiplyWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateMultiplyWithReseed, 1)
+}
+func BenchmarkReadUint32AddRotateMultiplyWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateMultiplyWithReseed, 16)
+}
+func BenchmarkReadUint32AddRotateMultiplyWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateMultiplyWithReseed, 1024)
+}
+func BenchmarkReadUint32AddRotateMultiplyWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateMultiplyWithReseed, 65536)
+}
+func BenchmarkReadUint32AddRotateMultiplyWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateMultiplyWithReseed, 65536)
+}
+
+func TestXORReadUint32AddRotateMultiplyWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiplyWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32AddRotateMultiplyWithReseed",
+		prng.ReadUint32AddRotateMultiplyWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint32AddRotateMultiply(a)
+	mathrand.GlobalPRNG.XORReadUint32AddRotateMultiply(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint32AddRotateMultiplyWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiplyWithReseed, 1)
+}
+func BenchmarkXORReadUint32AddRotateMultiplyWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiplyWithReseed, 16)
+}
+func BenchmarkXORReadUint32AddRotateMultiplyWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiplyWithReseed, 1024)
+}
+func BenchmarkXORReadUint32AddRotateMultiplyWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiplyWithReseed, 65536)
+}
+func BenchmarkXORReadUint32AddRotateMultiplyWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateMultiplyWithReseed, 65536)
+}
+
 func TestReadUint32MultiplyAdd(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint32MultiplyAdd)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint32MultiplyAdd", prng.ReadUint32MultiplyAdd)
+	prepareSample(
+		"Uint32MultiplyAdd",
+		prng.ReadUint32MultiplyAdd,
+		false,
+	)
 }
 func BenchmarkReadUint32MultiplyAdd1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32MultiplyAdd, 1)
@@ -197,10 +1024,99 @@ func BenchmarkReadUint32MultiplyAdd65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32MultiplyAdd, 65536)
 }
 
+func TestXORReadUint32MultiplyAdd(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32MultiplyAdd)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32MultiplyAdd",
+		prng.ReadUint32MultiplyAdd,
+		false,
+	)
+}
+func BenchmarkXORReadUint32MultiplyAdd1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32MultiplyAdd, 1)
+}
+func BenchmarkXORReadUint32MultiplyAdd16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32MultiplyAdd, 16)
+}
+func BenchmarkXORReadUint32MultiplyAdd1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32MultiplyAdd, 1024)
+}
+func BenchmarkXORReadUint32MultiplyAdd65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32MultiplyAdd, 65536)
+}
+func BenchmarkXORReadUint32MultiplyAdd65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32MultiplyAdd, 65536)
+}
+
+func TestReadUint32MultiplyAddWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint32MultiplyAddWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint32MultiplyAddWithReseed",
+		prng.ReadUint32MultiplyAddWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint32MultiplyAdd(a)
+	mathrand.GlobalPRNG.ReadUint32MultiplyAdd(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint32MultiplyAddWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32MultiplyAddWithReseed, 1)
+}
+func BenchmarkReadUint32MultiplyAddWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32MultiplyAddWithReseed, 16)
+}
+func BenchmarkReadUint32MultiplyAddWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32MultiplyAddWithReseed, 1024)
+}
+func BenchmarkReadUint32MultiplyAddWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32MultiplyAddWithReseed, 65536)
+}
+func BenchmarkReadUint32MultiplyAddWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32MultiplyAddWithReseed, 65536)
+}
+
+func TestXORReadUint32MultiplyAddWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32MultiplyAddWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32MultiplyAddWithReseed",
+		prng.ReadUint32MultiplyAddWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint32MultiplyAdd(a)
+	mathrand.GlobalPRNG.XORReadUint32MultiplyAdd(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint32MultiplyAddWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32MultiplyAddWithReseed, 1)
+}
+func BenchmarkXORReadUint32MultiplyAddWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32MultiplyAddWithReseed, 16)
+}
+func BenchmarkXORReadUint32MultiplyAddWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32MultiplyAddWithReseed, 1024)
+}
+func BenchmarkXORReadUint32MultiplyAddWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32MultiplyAddWithReseed, 65536)
+}
+func BenchmarkXORReadUint32MultiplyAddWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32MultiplyAddWithReseed, 65536)
+}
+
 func TestReadUint32AddRotate(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint32AddRotate)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint32AddRotate", prng.ReadUint32AddRotate)
+	prepareSample(
+		"Uint32AddRotate",
+		prng.ReadUint32AddRotate,
+		false,
+	)
 }
 func BenchmarkReadUint32AddRotate1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddRotate, 1)
@@ -218,10 +1134,209 @@ func BenchmarkReadUint32AddRotate65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32AddRotate, 65536)
 }
 
+func TestXORReadUint32AddRotate(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32AddRotate)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32AddRotate",
+		prng.ReadUint32AddRotate,
+		false,
+	)
+}
+func BenchmarkXORReadUint32AddRotate1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotate, 1)
+}
+func BenchmarkXORReadUint32AddRotate16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotate, 16)
+}
+func BenchmarkXORReadUint32AddRotate1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotate, 1024)
+}
+func BenchmarkXORReadUint32AddRotate65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotate, 65536)
+}
+func BenchmarkXORReadUint32AddRotate65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotate, 65536)
+}
+
+func TestReadUint32AddRotateWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint32AddRotateWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint32AddRotateWithReseed",
+		prng.ReadUint32AddRotateWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint32AddRotate(a)
+	mathrand.GlobalPRNG.ReadUint32AddRotate(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint32AddRotateWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateWithReseed, 1)
+}
+func BenchmarkReadUint32AddRotateWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateWithReseed, 16)
+}
+func BenchmarkReadUint32AddRotateWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateWithReseed, 1024)
+}
+func BenchmarkReadUint32AddRotateWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateWithReseed, 65536)
+}
+func BenchmarkReadUint32AddRotateWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32AddRotateWithReseed, 65536)
+}
+
+func TestXORReadUint32AddRotateWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32AddRotateWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32AddRotateWithReseed",
+		prng.ReadUint32AddRotateWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint32AddRotate(a)
+	mathrand.GlobalPRNG.XORReadUint32AddRotate(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint32AddRotateWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateWithReseed, 1)
+}
+func BenchmarkXORReadUint32AddRotateWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateWithReseed, 16)
+}
+func BenchmarkXORReadUint32AddRotateWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateWithReseed, 1024)
+}
+func BenchmarkXORReadUint32AddRotateWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateWithReseed, 65536)
+}
+func BenchmarkXORReadUint32AddRotateWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32AddRotateWithReseed, 65536)
+}
+
+func TestReadUint32AddIfShiftXOR(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint32AddIfShiftXOR)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint32AddIfShiftXOR",
+		prng.ReadUint32AddIfShiftXOR,
+		false,
+	)
+}
+func BenchmarkReadUint32AddIfShiftXOR1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddIfShiftXOR, 1)
+}
+func BenchmarkReadUint32AddIfShiftXOR16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddIfShiftXOR, 16)
+}
+func BenchmarkReadUint32AddIfShiftXOR1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddIfShiftXOR, 1024)
+}
+func BenchmarkReadUint32AddIfShiftXOR65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddIfShiftXOR, 65536)
+}
+func BenchmarkReadUint32AddIfShiftXOR65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32AddIfShiftXOR, 65536)
+}
+
+func TestXORReadUint32AddIfShiftXOR(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXOR)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32AddIfShiftXOR",
+		prng.ReadUint32AddIfShiftXOR,
+		false,
+	)
+}
+func BenchmarkXORReadUint32AddIfShiftXOR1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXOR, 1)
+}
+func BenchmarkXORReadUint32AddIfShiftXOR16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXOR, 16)
+}
+func BenchmarkXORReadUint32AddIfShiftXOR1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXOR, 1024)
+}
+func BenchmarkXORReadUint32AddIfShiftXOR65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXOR, 65536)
+}
+func BenchmarkXORReadUint32AddIfShiftXOR65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXOR, 65536)
+}
+
+func TestReadUint32AddIfShiftXORWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint32AddIfShiftXORWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint32AddIfShiftXORWithReseed",
+		prng.ReadUint32AddIfShiftXORWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint32AddIfShiftXOR(a)
+	mathrand.GlobalPRNG.ReadUint32AddIfShiftXOR(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint32AddIfShiftXORWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddIfShiftXORWithReseed, 1)
+}
+func BenchmarkReadUint32AddIfShiftXORWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddIfShiftXORWithReseed, 16)
+}
+func BenchmarkReadUint32AddIfShiftXORWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddIfShiftXORWithReseed, 1024)
+}
+func BenchmarkReadUint32AddIfShiftXORWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32AddIfShiftXORWithReseed, 65536)
+}
+func BenchmarkReadUint32AddIfShiftXORWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32AddIfShiftXORWithReseed, 65536)
+}
+
+func TestXORReadUint32AddIfShiftXORWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXORWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32AddIfShiftXORWithReseed",
+		prng.ReadUint32AddIfShiftXORWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint32AddIfShiftXOR(a)
+	mathrand.GlobalPRNG.XORReadUint32AddIfShiftXOR(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint32AddIfShiftXORWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXORWithReseed, 1)
+}
+func BenchmarkXORReadUint32AddIfShiftXORWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXORWithReseed, 16)
+}
+func BenchmarkXORReadUint32AddIfShiftXORWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXORWithReseed, 1024)
+}
+func BenchmarkXORReadUint32AddIfShiftXORWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXORWithReseed, 65536)
+}
+func BenchmarkXORReadUint32AddIfShiftXORWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32AddIfShiftXORWithReseed, 65536)
+}
+
 func TestReadUint32Xorshift(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint32Xorshift)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint32Xorshift", prng.ReadUint32Xorshift)
+	prepareSample(
+		"Uint32Xorshift",
+		prng.ReadUint32Xorshift,
+		false,
+	)
 }
 func BenchmarkReadUint32Xorshift1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32Xorshift, 1)
@@ -239,10 +1354,99 @@ func BenchmarkReadUint32Xorshift65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32Xorshift, 65536)
 }
 
+func TestXORReadUint32Xorshift(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32Xorshift)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32Xorshift",
+		prng.ReadUint32Xorshift,
+		false,
+	)
+}
+func BenchmarkXORReadUint32Xorshift1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32Xorshift, 1)
+}
+func BenchmarkXORReadUint32Xorshift16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32Xorshift, 16)
+}
+func BenchmarkXORReadUint32Xorshift1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32Xorshift, 1024)
+}
+func BenchmarkXORReadUint32Xorshift65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32Xorshift, 65536)
+}
+func BenchmarkXORReadUint32Xorshift65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32Xorshift, 65536)
+}
+
+func TestReadUint32XorshiftWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint32XorshiftWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint32XorshiftWithReseed",
+		prng.ReadUint32XorshiftWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint32Xorshift(a)
+	mathrand.GlobalPRNG.ReadUint32Xorshift(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint32XorshiftWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32XorshiftWithReseed, 1)
+}
+func BenchmarkReadUint32XorshiftWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32XorshiftWithReseed, 16)
+}
+func BenchmarkReadUint32XorshiftWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32XorshiftWithReseed, 1024)
+}
+func BenchmarkReadUint32XorshiftWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32XorshiftWithReseed, 65536)
+}
+func BenchmarkReadUint32XorshiftWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32XorshiftWithReseed, 65536)
+}
+
+func TestXORReadUint32XorshiftWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32XorshiftWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32XorshiftWithReseed",
+		prng.ReadUint32XorshiftWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint32Xorshift(a)
+	mathrand.GlobalPRNG.XORReadUint32Xorshift(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint32XorshiftWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32XorshiftWithReseed, 1)
+}
+func BenchmarkXORReadUint32XorshiftWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32XorshiftWithReseed, 16)
+}
+func BenchmarkXORReadUint32XorshiftWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32XorshiftWithReseed, 1024)
+}
+func BenchmarkXORReadUint32XorshiftWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32XorshiftWithReseed, 65536)
+}
+func BenchmarkXORReadUint32XorshiftWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32XorshiftWithReseed, 65536)
+}
+
 func TestReadUint32PCG(t *testing.T) {
 	//testRead(t, mathrand.GlobalPRNG.ReadUint32PCG)
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("Uint32PCG", prng.ReadUint32PCG)
+	prepareSample(
+		"Uint32PCG",
+		prng.ReadUint32PCG,
+		false,
+	)
 }
 func BenchmarkReadUint32PCG1(b *testing.B) {
 	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32PCG, 1)
@@ -258,4 +1462,89 @@ func BenchmarkReadUint32PCG65536(b *testing.B) {
 }
 func BenchmarkReadUint32PCG65536Concurrent(b *testing.B) {
 	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32PCG, 65536)
+}
+
+func TestXORReadUint32PCG(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32PCG)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32PCG",
+		prng.ReadUint32PCG,
+		false,
+	)
+}
+func BenchmarkXORReadUint32PCG1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32PCG, 1)
+}
+func BenchmarkXORReadUint32PCG16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32PCG, 16)
+}
+func BenchmarkXORReadUint32PCG1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32PCG, 1024)
+}
+func BenchmarkXORReadUint32PCG65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32PCG, 65536)
+}
+func BenchmarkXORReadUint32PCG65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32PCG, 65536)
+}
+
+func TestReadUint32PCGWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.ReadUint32PCGWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"Uint32PCGWithReseed",
+		prng.ReadUint32PCGWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.ReadUint32PCG(a)
+	mathrand.GlobalPRNG.ReadUint32PCG(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkReadUint32PCGWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32PCGWithReseed, 1)
+}
+func BenchmarkReadUint32PCGWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32PCGWithReseed, 16)
+}
+func BenchmarkReadUint32PCGWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32PCGWithReseed, 1024)
+}
+func BenchmarkReadUint32PCGWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.ReadUint32PCGWithReseed, 65536)
+}
+func BenchmarkReadUint32PCGWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.ReadUint32PCGWithReseed, 65536)
+}
+
+func TestXORReadUint32PCGWithReseed(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.XORReadUint32PCGWithReseed)
+	prng := mathrand.NewWithSeed(initialSeed)
+	prepareSample(
+		"XORUint32PCGWithReseed",
+		prng.ReadUint32PCGWithReseed,
+		true,
+	)
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.XORReadUint32PCG(a)
+	mathrand.GlobalPRNG.XORReadUint32PCG(b)
+	assert.NotEqual(t, a, b)
+}
+func BenchmarkXORReadUint32PCGWithReseed1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32PCGWithReseed, 1)
+}
+func BenchmarkXORReadUint32PCGWithReseed16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32PCGWithReseed, 16)
+}
+func BenchmarkXORReadUint32PCGWithReseed1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32PCGWithReseed, 1024)
+}
+func BenchmarkXORReadUint32PCGWithReseed65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.XORReadUint32PCGWithReseed, 65536)
+}
+func BenchmarkXORReadUint32PCGWithReseed65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.XORReadUint32PCGWithReseed, 65536)
 }

@@ -1,10 +1,10 @@
 package mathrand
 
-import (
-	"time"
-)
+import "time"
 
 var (
+	// GlobalPRNG is just an initialized (ready-to-use) PRNG which could
+	// be used from anywhere.
 	GlobalPRNG = New()
 )
 
@@ -44,21 +44,56 @@ func New() *PRNG {
 // seed.
 func NewWithSeed(seed uint64) *PRNG {
 	prng := &PRNG{}
+	prng.SetSeed(seed)
+	return prng
+}
+
+func (prng *PRNG) SetSeed(seed uint64) {
 	i := uint64(0)
+	if seed == 0 {
+		seed = primeNumber64bit1
+	}
 	for idx := range prng.state64 {
-		prng.state64[idx] = seed + i
+		prng.state64[idx] = seed
+		seed *= primeNumber64bit0
 		if prng.state64[idx] == 0 {
 			panic(`"seed+i" cannot be zero`)
 		}
 		i++
 	}
 	for idx := range prng.state32 {
-		prng.state32[idx] = uint32(seed + i)
+		prng.state32[idx] = uint32(seed)
+		seed *= primeNumber64bit0
 		if prng.state32[idx] == 0 {
 			panic(`"uint32(seed+i)" cannot be zero`)
 		}
 		i++
 	}
 	prng.pcgState = (seed << 1) + 1 // must be odd
-	return prng
+}
+
+func (prng *PRNG) Reseed() {
+	prng.SetSeed(prng.Uint64Xoshiro256())
+}
+
+func (prng *PRNG) fastReseed64() {
+	prng.state64[0] = prng.Uint64Xoshiro256()
+}
+
+func (prng *PRNG) fastReseed32() {
+	prng.state32[0] = uint32(prng.Uint64Xoshiro256())
+}
+
+func xorShift64(a uint64) uint64 {
+	a ^= a << 13
+	a ^= a >> 7
+	a ^= a << 17
+	return a
+}
+
+func xorShift32(a uint32) uint32 {
+	a ^= a << 13
+	a ^= a >> 17
+	a ^= a << 5
+	return a
 }

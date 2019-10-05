@@ -7,135 +7,124 @@ import (
 
 var (
 	templateRead = `
-// Read{{ .MethodName }} is an analog of math/rand.Read. This random numbers could easily
-// be predicted (it's not an analog of crypto/rand.Read).
-//
-// Applied PRNG method:
-// {{ .AdditionalInfo }}
-func (prng *PRNG) Read{{ .MethodName }}(b []byte) (l int, err error) {
-	l = len(b)
-	var i int
-	{{- if eq .ResultSize 8 }}
-	{
-		{{ .InitCode }}
-		for i = 8; i < l; i += 8 {
-			{{ .GetValueCode }}
-			*(*uint64)((unsafe.Pointer)(&b[i-8])) = {{ .ResultVariable }}
-		}
-		{{ .FinishCode }}
-	}
-	i -= 8
-	rest := prng.{{ .MethodName }}()
-	if i == l {
-		return
-	}
-	if l-i >= 4 {
-		*(*uint32)((unsafe.Pointer)(&b[i])) = uint32(rest)
-		rest >>= 32
-		i += 4
-	}
-	{{- else }}
-	{
-		{{ .InitCode }}
-		for i = 4; i < l; i += 4 {
-			{{ .GetValueCode }}
-			*(*uint32)((unsafe.Pointer)(&b[i-4])) = {{ .ResultVariable }}
-		}
-		{{ .FinishCode }}
-	}
-	i -= 4
-	rest := prng.{{ .MethodName }}()
-	if i == l {
-		return
-	}
-	{{- end }}
-	if l-i >= 2 {
-		*(*uint16)((unsafe.Pointer)(&b[i])) = uint16(rest)
-		rest >>= 16
-		i += 2
-	}
-	if l-i >= 1 {
-		b[i] = uint8(rest)
-	}
-	return
-}
-
-// XORRead XORs argument "b" with a pseudo-random value. The result is
-// the same (but faster) as:
+{{- if .IsXORRead }}
+// XORRead{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }} XORs argument "b" with a pseudo-random value.
+// The result is the same (but faster) as:
 //
 // 	x := make([]byte, len(b))
-// 	mathrand.Read{{ .MethodName }}(x)
+// 	mathrand.Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}(x)
 // 	for i := range b {
 // 		b[i] ^= x[i]
 // 	}
-func (prng *PRNG) XORRead{{ .MethodName }}(b []byte) (l int, err error) {
+{{- else }}
+// Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }} is an analog of math/rand.Read. This random
+// numbers could easily be predicted (it's not an analog of crypto/rand.Read).
+{{- if .EnableReseed }}
+//
+// "Reseed" forces to use a new good seed on setting value to a pointer `+"`& 0xff == 0`"+`. It allows
+// to improve randomness of random numbers with a small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
+// strongly performance or it will not improve the randomness.
+{{- end }}
+//
+// Applied PRNG method:
+// {{ .AdditionalInfo }}
+{{- end }}
+func (prng *PRNG) {{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}(b []byte) (l int, err error) {
 	l = len(b)
-	var i int
+	s := (uintptr)((unsafe.Pointer)(&b[0]))
+	p := s
+	e := s + uintptr(l)
+	{
+`+		// uint32 PRNG:
+		//
+		// len(b) == 12:  ....p...f...e   last p -> f
+		//                ^   ^   ^   ^
+		//
+		// len(b) == 11:  ....p..f...e    last p -> f-3
+		//                ^   ^   ^
+		//
+		// len(b) == 10:  ....p.f...e     last p -> f-2
+		//                ^   ^   ^
+		//
+		// len(b) == 9:   ....pf...e      last p -> f-1
+		//                ^   ^   ^
+`		{{ .InitCode }}
+		for f := e - {{ .ResultSize }}; p <= f; p += {{ .ResultSize }} {
+			{{ .GetValueCode }}
+			*(*uint{{ umul .ResultSize 8 }})((unsafe.Pointer)(p)) {{ if .IsXORRead }}^{{ end }}= {{ .ResultVariable }}
+			{{- if .EnableReseed }}
+			if p & 0xff < {{ .ResultSize }} {
+				continue
+			}
+			{{- if eq .MethodName "Uint32PCG" }}
+			pcgStateTemp = xorShift64(pcgStateTemp ^ primeNumber64bit0) << 1 + 1
+			{{- else }}
+			{{- if eq .ResultSize 8 }}
+			state64Temp0 = xorShift64(state64Temp0 ^ primeNumber64bit0)
+			{{- else }}
+			state{{ umul .ResultSize 8 }}Temp0 = (uint{{ umul .ResultSize 8 }})(xorShift32(state{{ umul .ResultSize 8 }}Temp0 ^ primeNumber{{ umul .ResultSize 8 }}bit0))
+			{{- end }}
+			{{- end }}
+			{{- end }}
+		}
+		{{ .FinishCode }}
+	}
+
+	if e - p == 0 {
+		return
+	}
+	rest := prng.{{ .MethodName }}()
+
 	{{- if eq .ResultSize 8 }}
-	{
-		{{ .InitCode }}
-		for i = 8; i < l; i += 8 {
-			{{ .GetValueCode }}
-			*(*uint64)((unsafe.Pointer)(&b[i-8])) ^= {{ .ResultVariable }}
-		}
-		{{ .FinishCode }}
-	}
-	i -= 8
-	rest := prng.{{ .MethodName }}()
-	if i == l {
-		return
-	}
-	if l-i >= 4 {
-		*(*uint32)((unsafe.Pointer)(&b[i])) = uint32(rest)
+	if e - p >= 4 {
+		*(*uint32)((unsafe.Pointer)(p)) {{ if .IsXORRead }}^{{ end }}= uint32(rest)
 		rest >>= 32
-		i += 4
-	}
-	{{- else }}
-	{
-		{{ .InitCode }}
-		for i = 4; i < l; i += 4 {
-			{{ .GetValueCode }}
-			*(*uint32)((unsafe.Pointer)(&b[i-4])) = {{ .ResultVariable }}
-		}
-		{{ .FinishCode }}
-	}
-	i -= 4
-	rest := prng.{{ .MethodName }}()
-	if i == l {
-		return
+		p += 4
 	}
 	{{- end }}
-	if l-i >= 2 {
-		*(*uint16)((unsafe.Pointer)(&b[i])) = uint16(rest)
+	if e - p >= 2 {
+		*(*uint16)((unsafe.Pointer)(p)) {{ if .IsXORRead }}^{{ end }}= uint16(rest)
 		rest >>= 16
-		i += 2
+		p += 2
 	}
-	if l-i >= 1 {
-		b[i] = uint8(rest)
+	if e - p >= 1 {
+		*(*uint8)((unsafe.Pointer)(p)) {{ if .IsXORRead }}^{{ end }}= uint8(rest)
 	}
 	return
 }
 `
 	templateTestRead = `
-func TestRead{{ .MethodName }}(t *testing.T) {
-	//testRead(t, mathrand.GlobalPRNG.Read{{ .MethodName }})
+func Test{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}(t *testing.T) {
+	//testRead(t, mathrand.GlobalPRNG.{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }})
 	prng := mathrand.NewWithSeed(initialSeed)
-	prepareSample("{{ .MethodName }}", prng.Read{{ .MethodName }})
+	prepareSample(
+		"{{ if .IsXORRead }}XOR{{ end }}{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}",
+		prng.Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }},
+		{{ .EnableReseed }},
+	)
+    {{- if .EnableReseed }}
+	a := make([]byte, 65536)
+	b := make([]byte, 65536)
+	mathrand.GlobalPRNG.{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}(a)
+	mathrand.GlobalPRNG.{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}(b)
+	assert.NotEqual(t, a, b)
+    {{- end }}
 }
-func BenchmarkRead{{ .MethodName }}1(b *testing.B) {
-	benchmarkRead(b, mathrand.GlobalPRNG.Read{{ .MethodName }}, 1)
+func Benchmark{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}1(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}, 1)
 }
-func BenchmarkRead{{ .MethodName }}16(b *testing.B) {
-	benchmarkRead(b, mathrand.GlobalPRNG.Read{{ .MethodName }}, 16)
+func Benchmark{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}16(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}, 16)
 }
-func BenchmarkRead{{ .MethodName }}1024(b *testing.B) {
-	benchmarkRead(b, mathrand.GlobalPRNG.Read{{ .MethodName }}, 1024)
+func Benchmark{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}1024(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}, 1024)
 }
-func BenchmarkRead{{ .MethodName }}65536(b *testing.B) {
-	benchmarkRead(b, mathrand.GlobalPRNG.Read{{ .MethodName }}, 65536)
+func Benchmark{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}65536(b *testing.B) {
+	benchmarkRead(b, mathrand.GlobalPRNG.{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}, 65536)
 }
-func BenchmarkRead{{ .MethodName }}65536Concurrent(b *testing.B) {
-	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.Read{{ .MethodName }}, 65536)
+func Benchmark{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}65536Concurrent(b *testing.B) {
+	benchmarkConcurrentRead(b, mathrand.GlobalPRNG.{{ if .IsXORRead }}XOR{{ end }}Read{{ .MethodName }}{{- if .EnableReseed }}WithReseed{{- end }}, 65536)
 }
 `
 	templateTestMethod = `
@@ -169,6 +158,9 @@ func GetTemplates() (result *Templates, err error) {
 	funcs := map[string]interface{}{
 		"stringsJoin": func(slice []string, sep string) string {
 			return strings.Join(slice, sep)
+		},
+		"umul": func(a, b uint) uint {
+			return a * b
 		},
 	}
 

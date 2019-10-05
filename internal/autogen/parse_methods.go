@@ -137,23 +137,25 @@ func parseMethod(funcDecl *ast.FuncDecl, genInfo *genInfo) (method *Method) {
 		method.initCodeLines = append(method.initCodeLines, `var `+method.ResultVariable+` `+resultTypeName)
 	}
 
-	var codeLines []string
+	method.addBodyStmt(funcDecl.Body)
 
-	for _, decl := range funcDecl.Body.List {
+	method.compile()
+	return
+}
+
+func (m *Method) addBodyStmt(body *ast.BlockStmt) {
+	for _, decl := range body.List {
 		switch decl := decl.(type) {
 		case *ast.AssignStmt:
-			method.addAssignStmt(decl)
+			m.addAssignStmt(decl)
 		case *ast.ReturnStmt:
-			method.addReturnStmt(decl)
+			m.addReturnStmt(decl)
+		case *ast.IfStmt:
+			m.addIfStmt(decl)
 		default:
 			panic(fmt.Sprintf("%T", decl))
 		}
 	}
-
-	method.GetValueCode = strings.Join(codeLines, "\n")
-
-	method.compile()
-	return
 }
 
 func (m *Method) compile() {
@@ -182,6 +184,16 @@ func (m *Method) addAssignStmt(stmt *ast.AssignStmt) {
 	l := m.getCodeString(stmt.Lhs[0])
 	r := m.getCodeString(stmt.Rhs[0])
 	m.getValueCodeLines = append(m.getValueCodeLines, l+` `+stmt.Tok.String()+` `+r)
+}
+
+func (m *Method) addIfStmt(stmt *ast.IfStmt) {
+	m.getValueCodeLines = append(m.getValueCodeLines, `if ` + m.getCodeString(stmt.Cond)+` {`)
+	s := m.getValueCodeLines
+	m.addBodyStmt(stmt.Body)
+	for idx := range m.getValueCodeLines[len(s):] {
+		m.getValueCodeLines[len(s)+idx] = "\t" + m.getValueCodeLines[len(s)+idx]
+	}
+	m.getValueCodeLines = append(m.getValueCodeLines, `}`)
 }
 
 func (m *Method) getCodeString(expr ast.Expr) string {

@@ -44,6 +44,18 @@ func BenchmarkUint32AddRotate(b *testing.B) {
 	}
 }
 
+func TestUint32AddIfShiftXOR(t *testing.T) {
+	//testUint32(t, mathrand.GlobalPRNG.Uint32AddIfShiftXOR)
+}
+func BenchmarkUint32AddIfShiftXOR(b *testing.B) {
+	prng := mathrand.New()
+	b.SetBytes(4)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		prng.Uint32AddIfShiftXOR()
+	}
+}
+
 func TestUint32Xorshift(t *testing.T) {
 	//testUint32(t, mathrand.GlobalPRNG.Uint32Xorshift)
 }
