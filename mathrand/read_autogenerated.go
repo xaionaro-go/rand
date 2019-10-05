@@ -97,10 +97,11 @@ func (prng *PRNG) XORReadUint64AddRotateMultiply(b []byte) (l int, err error) {
 // ReadUint64AddRotateMultiplyWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 8`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint64AddRotateMultiply is a fast analog of `math/rand.Uint64`.
@@ -288,10 +289,11 @@ func (prng *PRNG) XORReadUint64AddNRotateMultiply(b []byte) (l int, err error) {
 // ReadUint64AddNRotateMultiplyWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 8`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint64AddNRotateMultiply is a fast analog of `math/rand.Uint64`.
@@ -476,10 +478,11 @@ func (prng *PRNG) XORReadUint64MultiplyAdd(b []byte) (l int, err error) {
 // ReadUint64MultiplyAddWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 8`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint64MultiplyAdd is a fast (but week) analog of `math/rand.Uint64`.
@@ -657,10 +660,11 @@ func (prng *PRNG) XORReadUint64AddRotate(b []byte) (l int, err error) {
 // ReadUint64AddRotateWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 8`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint64AddRotate is a very fast (but weak) analog of `math/rand.Uint64`.
@@ -840,10 +844,11 @@ func (prng *PRNG) XORReadUint64AddIfShiftXOR(b []byte) (l int, err error) {
 // ReadUint64AddIfShiftXORWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 8`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint64AddIfShiftXOR is a very fast (but weak) analog of `math/rand.Uint32`.
@@ -1027,10 +1032,11 @@ func (prng *PRNG) XORReadUint64Xorshift(b []byte) (l int, err error) {
 // ReadUint64XorshiftWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 8`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint64Xorshift is a very fast (but weak) analog of `math/rand.Uint64`.
@@ -1236,10 +1242,11 @@ func (prng *PRNG) XORReadUint64Xoshiro256(b []byte) (l int, err error) {
 // ReadUint64Xoshiro256WithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 8`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // See also: https://en.wikipedia.org/wiki/Xorshift#xoshiro_and_xoroshiro
@@ -1449,10 +1456,11 @@ func (prng *PRNG) XORReadUint64MSWS(b []byte) (l int, err error) {
 // ReadUint64MSWSWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 8`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // See also: https://en.wikipedia.org/wiki/Middle-square_method
@@ -1631,10 +1639,11 @@ func (prng *PRNG) XORReadUint32AddRotateMultiply(b []byte) (l int, err error) {
 // ReadUint32AddRotateMultiplyWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 4`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint32AddRotateMultiply is a fast analog of `math/rand.Uint32`.
@@ -1797,10 +1806,11 @@ func (prng *PRNG) XORReadUint32MultiplyAdd(b []byte) (l int, err error) {
 // ReadUint32MultiplyAddWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 4`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint32MultiplyAdd is a fast (but week) analog of `math/rand.Uint32`.
@@ -1958,10 +1968,11 @@ func (prng *PRNG) XORReadUint32AddRotate(b []byte) (l int, err error) {
 // ReadUint32AddRotateWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 4`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint32AddRotate is a very fast (but weak) analog of `math/rand.Uint32`.
@@ -2121,10 +2132,11 @@ func (prng *PRNG) XORReadUint32AddIfShiftXOR(b []byte) (l int, err error) {
 // ReadUint32AddIfShiftXORWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 4`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint32AddIfShiftXOR is a very fast (but weak) analog of `math/rand.Uint32`.
@@ -2288,10 +2300,11 @@ func (prng *PRNG) XORReadUint32Xorshift(b []byte) (l int, err error) {
 // ReadUint32XorshiftWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 4`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // Uint32Xorshift is a very fast (but weak) analog of `math/rand.Uint32`.
@@ -2455,10 +2468,11 @@ func (prng *PRNG) XORReadUint32PCG(b []byte) (l int, err error) {
 // ReadUint32PCGWithReseed is an analog of math/rand.Read. This random
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `& 0xff == 0`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `& 0xff < 4`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 //
 // Applied PRNG method:
 // See also: https://en.wikipedia.org/wiki/Permuted_congruential_generator

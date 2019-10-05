@@ -21,10 +21,11 @@ var (
 // numbers could easily be predicted (it's not an analog of crypto/rand.Read).
 {{- if .EnableReseed }}
 //
-// "Reseed" forces to use a new good seed on setting value to a pointer `+"`& 0xff == 0`"+`. It allows
-// to improve randomness of random numbers with a small performance impact.
-// This method makes sense only if len(b) is large enough (>= 256 bytes). Otherwise it could affect
-// strongly performance or it will not improve the randomness.
+// "Reseed" forces to use a new seed (generated using XORShift method) on setting value to
+// a pointer `+"`& 0xff < {{ .ResultSize }}`"+`. Sometimes it allows to improve randomness of random numbers with a
+// small performance impact.
+// This method makes sense only if len(b) is large enough (>= 256 bytes).
+// Otherwise it could affect strongly performance or it will not improve the randomness.
 {{- end }}
 //
 // Applied PRNG method:
