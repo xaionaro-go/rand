@@ -52,7 +52,7 @@ func (prng *PRNG) Uint64AddRotate() uint64 {
 	return prng.state64[0]
 }
 
-// Uint64AddIfShiftXOR is a very fast (but weak) analog of `math/rand.Uint32`.
+// Uint64AddIfShiftXOR is a very fast (but weak) analog of `math/rand.Uint64`.
 func (prng *PRNG) Uint64AddIfShiftXOR() uint64 {
 	prng.state64[0] += primeNumber64bit1
 	if prng.state64[0]&0x02 == 0 {
